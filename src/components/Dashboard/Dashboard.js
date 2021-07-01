@@ -17,7 +17,7 @@ const Dashboard = (props) => {
   if (props.loggedInStatus) {
     return (
       <div>
-        <h1>Welcome {props.user.username}</h1>
+        <h1>Welcome {props.user.fullname}</h1>
         <Link to='/logout' onClick={handleClick}>Log Out</Link>
       </div>     
     )
