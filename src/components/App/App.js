@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Dashboard from '../Dashboard/Dashboard'
 import Home from '../Home/Home'
-import Login from '../Login/Login'
 import Signup from '../Signup/Signup'
 
 class App extends Component {
@@ -33,7 +33,7 @@ class App extends Component {
   handleLogin = (data) => {
     this.setState({
       isLoggedIn: true,
-      user: data.user
+      user: data.user || data.data.user
     })
   }
 
@@ -49,30 +49,34 @@ class App extends Component {
       <div>
         <BrowserRouter>
           <Switch>
+
             <Route 
               exact path='/' 
               render={props => (
-              <Home {...props} handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn}/>
+              <Home {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />
               )}
             />
+
             <Route 
-              exact path='/login' 
+              exact path='/dashboard' 
               render={props => (
-              <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
+              <Dashboard {...props} handleLogin={this.handleLogin} handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} user={this.state.user} />
               )}
             />
+
             <Route 
               exact path='/signup' 
               render={props => (
-              <Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
+              <Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />
               )}
             />
+
           </Switch>
         </BrowserRouter>
       </div>
     );
   }
-  
+
 }
 
 export default App;

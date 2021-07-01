@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 class Signup extends Component {
@@ -96,6 +97,9 @@ class Signup extends Component {
           <button placeholder="submit" type="submit">
             Sign Up
           </button>
+          <div>
+            or <Link to='/'>login</Link>
+          </div>
       
         </form>
         <div>
@@ -106,6 +110,6 @@ class Signup extends Component {
       </div>
     );
   }
-  
+
 }
 export default Signup;
