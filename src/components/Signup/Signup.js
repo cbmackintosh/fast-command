@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+
 class Signup extends Component {
   constructor(props) {
     super(props);
@@ -11,13 +12,15 @@ class Signup extends Component {
       errors: ''
      };
   }
-handleChange = (event) => {
+  
+  handleChange = (event) => {
     const {name, value} = event.target
     this.setState({
       [name]: value
     })
   };
-handleSubmit = (event) => {
+  
+  handleSubmit = (event) => {
     event.preventDefault()
     const {username, email, password, password_confirmation} = this.state
     let user = {
@@ -26,7 +29,8 @@ handleSubmit = (event) => {
       password: password,
       password_confirmation: password_confirmation
     }
-axios.post('http://localhost:3001/users', {user}, {withCredentials: true})
+
+    axios.post('http://localhost:3005/users', {user}, {withCredentials: true})
     .then(response => {
       if (response.data.status === 'created') {
         this.props.handleLogin(response.data)
@@ -39,10 +43,12 @@ axios.post('http://localhost:3001/users', {user}, {withCredentials: true})
     })
     .catch(error => console.log('api errors:', error))
   };
-redirect = () => {
+
+  redirect = () => {
     this.props.history.push('/')
   }
-handleErrors = () => {
+
+  handleErrors = () => {
     return (
       <div>
         <ul>{this.state.errors.map((error) => {
@@ -51,9 +57,10 @@ handleErrors = () => {
       </div>
     )
   }
-render() {
+  render() {
     const {username, email, password, password_confirmation} = this.state
-return (
+    
+    return (
       <div>
         <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit}>
@@ -99,5 +106,6 @@ return (
       </div>
     );
   }
+  
 }
 export default Signup;
