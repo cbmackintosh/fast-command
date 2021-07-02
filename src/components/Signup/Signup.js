@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Input from 'react-phone-number-input/input'
 
 class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      username: '',
+      firstname: '',
+      lastname: '',
+      jobtitle: '',
+      organization: '',
+      phone: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -20,12 +25,21 @@ class Signup extends Component {
       [name]: value
     })
   };
+
+  handlePhoneInput = (event) => {
+    this.setState({ phone: event })
+  }
   
   handleSubmit = (event) => {
     event.preventDefault()
-    const {username, email, password, password_confirmation} = this.state
+    const {firstname, lastname, jobtitle, organization, phone, email, password, password_confirmation} = this.state
+    console.log(this.state)
     let user = {
-      username: username,
+      firstname: firstname,
+      lastname: lastname,
+      jobtitle: jobtitle,
+      organization: organization,
+      phone: phone,
       email: email,
       password: password,
       password_confirmation: password_confirmation
@@ -59,18 +73,46 @@ class Signup extends Component {
     )
   }
   render() {
-    const {username, email, password, password_confirmation} = this.state
-    
+    const {firstname, lastname, jobtitle, organization, phone, email, password, password_confirmation} = this.state
+
     return (
       <div>
         <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit}>
           <input
-            placeholder="username"
+            placeholder="first name"
             type="text"
-            name="username"
-            value={username}
+            name="firstname"
+            value={firstname}
             onChange={this.handleChange}
+          />
+          <input
+            placeholder="last name"
+            type="text"
+            name="lastname"
+            value={lastname}
+            onChange={this.handleChange}
+          />
+          <input
+            placeholder="job title"
+            type="text"
+            name="jobtitle"
+            value={jobtitle}
+            onChange={this.handleChange}
+          />
+          <input
+            placeholder="agency or organization"
+            type="text"
+            name="organization"
+            value={organization}
+            onChange={this.handleChange}
+          />
+          <Input
+            country="US"
+            name="phone"
+            value={phone}
+            onChange={this.handlePhoneInput}
+            maxLength="14"
           />
           <input
             placeholder="email"
