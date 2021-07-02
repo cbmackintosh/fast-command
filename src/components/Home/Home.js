@@ -6,7 +6,6 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      username: '',
       email: '',
       password: '',
       errors: ''
@@ -64,19 +63,12 @@ class Home extends Component {
   }
   
   render() {
-    const {username, email, password} = this.state
+    const {email, password} = this.state
 
     return (
       <div>
         <h1>Log In</h1>
         <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder="username"
-            type="text"
-            name="username"
-            value={username}
-            onChange={this.handleChange}
-          />
           <input
             placeholder="email"
             type="text"
