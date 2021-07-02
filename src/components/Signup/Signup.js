@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Input from 'react-phone-number-input/input'
 
 class Signup extends Component {
   constructor(props) {
@@ -8,6 +9,9 @@ class Signup extends Component {
     this.state = { 
       firstname: '',
       lastname: '',
+      jobtitle: '',
+      organization: '',
+      phone: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -21,14 +25,21 @@ class Signup extends Component {
       [name]: value
     })
   };
+
+  handlePhoneInput = (event) => {
+    this.setState({ phone: event })
+  }
   
   handleSubmit = (event) => {
     event.preventDefault()
-    const {firstname, lastname, email, password, password_confirmation} = this.state
+    const {firstname, lastname, jobtitle, organization, phone, email, password, password_confirmation} = this.state
     console.log(this.state)
     let user = {
       firstname: firstname,
       lastname: lastname,
+      jobtitle: jobtitle,
+      organization: organization,
+      phone: phone,
       email: email,
       password: password,
       password_confirmation: password_confirmation
@@ -62,7 +73,7 @@ class Signup extends Component {
     )
   }
   render() {
-    const {firstname, lastname, email, password, password_confirmation} = this.state
+    const {firstname, lastname, jobtitle, organization, phone, email, password, password_confirmation} = this.state
 
     return (
       <div>
@@ -81,6 +92,27 @@ class Signup extends Component {
             name="lastname"
             value={lastname}
             onChange={this.handleChange}
+          />
+          <input
+            placeholder="job title"
+            type="text"
+            name="jobtitle"
+            value={jobtitle}
+            onChange={this.handleChange}
+          />
+          <input
+            placeholder="agency or organization"
+            type="text"
+            name="organization"
+            value={organization}
+            onChange={this.handleChange}
+          />
+          <Input
+            country="US"
+            name="phone"
+            value={phone}
+            onChange={this.handlePhoneInput}
+            maxLength="14"
           />
           <input
             placeholder="email"

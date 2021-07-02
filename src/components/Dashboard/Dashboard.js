@@ -18,6 +18,9 @@ const Dashboard = (props) => {
     return (
       <div>
         <h1>Welcome {props.user.firstname} {props.user.lastname}</h1>
+        <p>{props.user.jobtitle} - {props.user.organization}</p>
+        <p>Phone: {props.user.phone}</p>
+        <p>Email: {props.user.email}</p>
         <Link to='/logout' onClick={handleClick}>Log Out</Link>
       </div>     
     )
