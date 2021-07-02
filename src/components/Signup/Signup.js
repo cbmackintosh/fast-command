@@ -6,7 +6,8 @@ class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      fullname: '',
+      firstname: '',
+      lastname: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -23,10 +24,11 @@ class Signup extends Component {
   
   handleSubmit = (event) => {
     event.preventDefault()
-    const {fullname, email, password, password_confirmation} = this.state
+    const {firstname, lastname, email, password, password_confirmation} = this.state
     console.log(this.state)
     let user = {
-      fullname: fullname,
+      firstname: firstname,
+      lastname: lastname,
       email: email,
       password: password,
       password_confirmation: password_confirmation
@@ -60,17 +62,24 @@ class Signup extends Component {
     )
   }
   render() {
-    const {fullname, email, password, password_confirmation} = this.state
+    const {firstname, lastname, email, password, password_confirmation} = this.state
 
     return (
       <div>
         <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit}>
           <input
-            placeholder="what's your name?"
+            placeholder="first name"
             type="text"
-            name="fullname"
-            value={fullname}
+            name="firstname"
+            value={firstname}
+            onChange={this.handleChange}
+          />
+          <input
+            placeholder="last name"
+            type="text"
+            name="lastname"
+            value={lastname}
             onChange={this.handleChange}
           />
           <input
