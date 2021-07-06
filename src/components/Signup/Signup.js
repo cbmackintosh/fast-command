@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { signupUserThunk } from '../App/AppSlice'
 import Input from 'react-phone-number-input/input'
 
-const Signup = () => {
-  
+const Signup = (props) => {
+  console.log(props.history)
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [jobtitle, setJobtitle] = useState('')
@@ -31,6 +31,15 @@ const Signup = () => {
       password_confirmation: password_confirmation
     }
     dispatch(signupUserThunk(user))
+    .then(response => {
+      if (response.payload.status === 'created') {
+        redirect()
+      }
+    })
+  }
+
+  const redirect = () => {
+    props.history.push('/')
   }
 
   const handleErrors = () => {
@@ -83,7 +92,7 @@ const Signup = () => {
       <Input
         country='US'
         name='phone'
-        onChange={e => setPhone(e.target.value)}
+        onChange={e => setPhone(e)}
         value={phone}
         maxLength="14"
       />

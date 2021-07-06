@@ -16,7 +16,6 @@ const initialState = {
 export const loginStatusThunk = createAsyncThunk(
   'loginStatus/loginStatus',
   async () => {
-    console.log('test')
     const response = await checkLoginStatus()
     return response
   }
