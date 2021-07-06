@@ -4,7 +4,7 @@ import {
   loginUser,
   logoutUser,
   signupUser
-} from '../../apicalls'
+} from '../../api-calls'
 
 const initialState = {
   status: 'idle',
