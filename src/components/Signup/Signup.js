@@ -5,7 +5,7 @@ import { signupUserThunk } from '../App/AppSlice'
 import Input from 'react-phone-number-input/input'
 
 const Signup = (props) => {
-  console.log(props.history)
+
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [jobtitle, setJobtitle] = useState('')
