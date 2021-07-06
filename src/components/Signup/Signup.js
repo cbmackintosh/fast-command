@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { signupUserThunk } from '../App/AppSlice'
+import Input from 'react-phone-number-input/input'
 
 const Signup = () => {
   
@@ -79,11 +80,12 @@ const Signup = () => {
       />
 
       <label htmlFor="phone">Phone</label>
-      <input
-        type='text'
+      <Input
+        country='US'
         name='phone'
         onChange={e => setPhone(e.target.value)}
         value={phone}
+        maxLength="14"
       />
 
       <label htmlFor='email'>Email</label>
