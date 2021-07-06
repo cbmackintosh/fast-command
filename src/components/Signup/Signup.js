@@ -1,39 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
-import Input from 'react-phone-number-input/input'
+import { signupUserThunk } from '../App/AppSlice'
 
-class Signup extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      firstname: '',
-      lastname: '',
-      jobtitle: '',
-      organization: '',
-      phone: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
-      errors: ''
-     };
-  }
+const Signup = () => {
   
-  handleChange = (event) => {
-    const {name, value} = event.target
-    this.setState({
-      [name]: value
-    })
-  };
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [jobtitle, setJobtitle] = useState('')
+  const [organization, setOrganization] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [password_confirmation, setPassword_confirmation] = useState('')
 
-  handlePhoneInput = (event) => {
-    this.setState({ phone: event })
-  }
-  
-  handleSubmit = (event) => {
-    event.preventDefault()
-    const {firstname, lastname, jobtitle, organization, phone, email, password, password_confirmation} = this.state
-    console.log(this.state)
+  const dispatch = useDispatch()
+  const errors = useSelector(state => state.user.errors)
+
+  const handleSignup = e => {
+    e.preventDefault()
     let user = {
       firstname: firstname,
       lastname: lastname,
@@ -44,114 +29,96 @@ class Signup extends Component {
       password: password,
       password_confirmation: password_confirmation
     }
-
-    axios.post('http://localhost:3005/users', {user}, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'created') {
-        this.props.handleLogin(response.data)
-        this.redirect()
-      } else {
-        this.setState({
-          errors: response.data.errors
-        })
-      }
-    })
-    .catch(error => console.log('api errors:', error))
-  };
-
-  redirect = () => {
-    this.props.history.push('/')
+    dispatch(signupUserThunk(user))
   }
 
-  handleErrors = () => {
+  const handleErrors = () => {
     return (
       <div>
-        <ul>{this.state.errors.map((error) => {
+        <ul>{errors.map((error) => {
           return <li key={error}>{error}</li>
         })}</ul> 
       </div>
     )
   }
-  render() {
-    const {firstname, lastname, jobtitle, organization, phone, email, password, password_confirmation} = this.state
 
-    return (
-      <div>
-        <h1>Sign Up</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder="first name"
-            type="text"
-            name="firstname"
-            value={firstname}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="last name"
-            type="text"
-            name="lastname"
-            value={lastname}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="job title"
-            type="text"
-            name="jobtitle"
-            value={jobtitle}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="agency or organization"
-            type="text"
-            name="organization"
-            value={organization}
-            onChange={this.handleChange}
-          />
-          <Input
-            country="US"
-            name="phone"
-            value={phone}
-            onChange={this.handlePhoneInput}
-            maxLength="14"
-          />
-          <input
-            placeholder="email"
-            type="text"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-          <input 
-            placeholder="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="password confirmation"
-            type="password"
-            name="password_confirmation"
-            value={password_confirmation}
-            onChange={this.handleChange}
-          />
-        
-          <button placeholder="submit" type="submit">
-            Sign Up
-          </button>
-          <div>
-            or <Link to='/'>login</Link>
-          </div>
-      
-        </form>
-        <div>
-          {
-            this.state.errors ? this.handleErrors() : null
-          }
-        </div>
-      </div>
-    );
-  }
+  return (
+    <form onSubmit={handleSignup}>
+      <h1>Signup</h1>
+
+      <label htmlFor='firstname'>First Name</label>
+      <input
+        type='text'
+        name='firstname'
+        onChange={e => setFirstname(e.target.value)}
+        value={firstname}
+      />
+
+      <label htmlFor='firstname'>Last Name</label>
+      <input
+        type='text'
+        name='lastname'
+        onChange={e => setLastname(e.target.value)}
+        value={lastname}
+      />
+
+      <label htmlFor='jobtitle'>Job Title</label>
+      <input
+        type='text'
+        name='jobtitle'
+        onChange={e => setJobtitle(e.target.value)}
+        value={jobtitle}
+      />
+
+      <label htmlFor='organization'>Organization</label>
+      <input
+        type='text'
+        name='organization'
+        onChange={e => setOrganization(e.target.value)}
+        value={organization}
+      />
+
+      <label htmlFor="phone">Phone</label>
+      <input
+        type='text'
+        name='phone'
+        onChange={e => setPhone(e.target.value)}
+        value={phone}
+      />
+
+      <label htmlFor='email'>Email</label>
+      <input
+        type='text'
+        name='email'
+        onChange={e => setEmail(e.target.value)}
+        value={email}
+      />
+
+      <label htmlFor='password_confirmation'>Password</label>
+      <input
+        type='password'
+        name='password_confirmation'
+        onChange={e => setPassword_confirmation(e.target.value)}
+        value={password_confirmation}
+      />
+
+      <label htmlFor='password'>Password</label>
+      <input
+        type='password'
+        name='password'
+        onChange={e => setPassword(e.target.value)}
+        value={password}
+      />
+
+      <button type="submit">SUBMIT</button>
+
+      <Link to='/'>Login</Link>
+
+      {errors.length && handleErrors()}
+
+    </form>
+  )
 
 }
-export default Signup;
+
+export default Signup
