@@ -6,7 +6,8 @@ When responding to a large-scale incidents such as wildfires or other natural di
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/ICS_Structure.PNG">
 
-Fast Command is a web application that 
+<a href="https://insights.sei.cmu.edu/blog/top-5-incident-management-issues/">A recent study by Carnegie Mellon University</a> found that one of the top 5 challenges facing Incident Management is the lack of a database of critical personnel and assets. FastCommand is a web application that allows the user (presumably an Incident Commander or other Command Staff) to curate such a database ahead of time. In the event of an incident, this database can be used to quickly assign and reassign personnel and assets to specific roles on the ICS flowchart. Responding agencies and members of the public will then have access to a read-only public-facing webpage that displays the full ICS flowchart.  FastCommand can also be used to compile and post press-releases which are visible on the public-facing site.
+
 
 ## Installation
 
