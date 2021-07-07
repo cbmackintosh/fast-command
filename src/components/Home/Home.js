@@ -1,104 +1,30 @@
-import React, { Component } from 'react';
-import axios from 'axios'
-import { Link } from 'react-router-dom'
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      email: '',
-      password: '',
-      errors: ''
-     };
-  }
-  componentWillMount() {
-    return this.props.loggedInStatus ? this.redirect() : null
-  }
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Dashboard from '../Dashboard/Dashboard'
+import Login from '../Login/Login'
+import { loginStatusThunk } from '../App/AppSlice'
 
-  handleChange = (event) => {
-    const {name, value} = event.target
-    this.setState({
-      [name]: value
-    })
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault()
-    const {username, email, password} = this.state
-    let user = {
-      username: username,
-      email: email,
-      password: password
-    }
-    
-    axios.post('http://localhost:3005/login', {user}, {withCredentials: true})
-    .then(response => {
-      if (response.data.logged_in) {
-        this.props.handleLogin(response.data)
-        this.redirect()
-      } else {
-        this.setState({
-          errors: response.data.errors
-        })
-      }
-    })
-    .catch(error => console.log('api errors:', error))
-  };
-
-  redirect = () => {
-    this.props.history.push('/dashboard')
-  }
-
-  handleErrors = () => {
-    return (
-      <div>
-        <ul>
-        {this.state.errors.map(error => {
-        return <li key={error}>{error}</li>
-          })
-        }
-        </ul>
-      </div>
-    )
-  }
+const Home = () => {
   
-  render() {
-    const {email, password} = this.state
+  const loginStatus = useSelector(state => state.user)
 
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(loginStatusThunk())
+  }, [dispatch])
+
+  if (loginStatus.isLoggedIn) {
     return (
-      <div>
-        <h1>Log In</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder="email"
-            type="text"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <button placeholder="submit" type="submit">
-            Log In
-          </button>
-          <div>
-            or <Link to='/signup'>sign up</Link>
-          </div>
-          
-          </form>
-          <div>
-          {
-            this.state.errors ? this.handleErrors() : null
-          }
-        </div>
-      </div>
-    );
+      <Dashboard />
+    )
+  } else {
+    return (
+      <Login />
+    )
   }
 
 }
-export default Home;
+
+export default Home
