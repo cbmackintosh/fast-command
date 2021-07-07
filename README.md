@@ -1,5 +1,8 @@
 # FastCommand
 
+<img src="https://img.shields.io/badge/LinkedIn-cameron--mackintosh-informational?style=for-the-badge&labelColor=black&logo=linkedin&logoColor=0077b5&&color=0FBBD6"/>
+<img src="https://img.shields.io/badge/Github-cbmackintosh-informational?style=for-the-badge&labelColor=black&logo=github&color=8B0BD5"/>
+
 ## Abstract
 
 When responding to a large-scale incidents such as wildfires or other natural disasters, first responders and government agencies throughout the United States utlitize a standardized approach called the <a href="https://www.ready.gov/incident-management">Incident Command System.</a> The ICS establishes a modular and flexible chain of command that allows for seamless cooperation between various agencies and prevents duplication of efforts. The Incident Command System can best be summarized by the flowchart below:
