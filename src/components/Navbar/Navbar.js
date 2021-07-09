@@ -6,6 +6,7 @@ import './Navbar.css'
 export const Navbar = () => {
 
   const [screenWidth, setScreenWidth] = useState(0)
+  const [isCollapsed, setIsCollapsed] = useState(true)
 
   useEffect(() => {
     setScreenWidth(visualViewport.width)
@@ -14,14 +15,36 @@ export const Navbar = () => {
     })
   }, [])
 
-  return (
-    <div className='navbar'>
-      {screenWidth < 600 && <GiHamburgerMenu />}
-      <Link>Home</Link>
-      <Link>Contacts</Link>
-      <Link>New Incident</Link>
-      <Link>Incident History</Link>
-      <Link>Logout</Link>
-    </div>
-  )
+  const toggleNavbar = () => {
+    isCollapsed === true ? setIsCollapsed(false) : setIsCollapsed(true)
+  }
+
+  if (screenWidth > 600) {
+    return (
+      <div className='navbar'>
+        <Link>Home</Link>
+        <Link>Contacts</Link>
+        <Link>New Incident</Link>
+        <Link>Incident History</Link>
+        <Link>Logout</Link>
+      </div>
+    )
+  } else if (isCollapsed === true) {
+    return (
+      <div className='collapse-nav'>
+        <GiHamburgerMenu onClick={toggleNavbar} />
+      </div>
+    )
+  } else {
+    return (
+      <div className='navbar'>
+        <GiHamburgerMenu onClick={toggleNavbar} />
+        <Link>Home</Link>
+        <Link>Contacts</Link>
+        <Link>New Incident</Link>
+        <Link>Incident History</Link>
+        <Link>Logout</Link>
+      </div>
+    )
+  }
 }
