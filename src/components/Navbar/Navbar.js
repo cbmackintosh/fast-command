@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import './Navbar.css'
 
-export const Navbar = () => {
+export const Navbar = (props) => {
 
   const [screenWidth, setScreenWidth] = useState(0)
   const [isCollapsed, setIsCollapsed] = useState(true)
@@ -26,7 +26,7 @@ export const Navbar = () => {
         <Link>Contacts</Link>
         <Link>New Incident</Link>
         <Link>Incident History</Link>
-        <Link>Logout</Link>
+        <button onClick={props.logout}>LOGOUT</button>
       </div>
     )
   } else if (isCollapsed === true) {
@@ -43,7 +43,7 @@ export const Navbar = () => {
         <Link>Contacts</Link>
         <Link>New Incident</Link>
         <Link>Incident History</Link>
-        <Link>Logout</Link>
+        <button onClick={props.logout}>LOGOUT</button>
       </div>
     )
   }

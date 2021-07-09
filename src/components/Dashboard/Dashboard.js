@@ -16,13 +16,12 @@ const Dashboard = () => {
   
   return (
     <div className='dashboard'>
-      <Navbar />
+      <Navbar logout={handleLogout} />
       <div className='profile-info'>
-        <h1>Welcome {user.firstname} {user.lastname}</h1>
+        <h1>{user.firstname} {user.lastname}</h1>
         <p>{user.jobtitle} - {user.organization}</p>
         <p>Phone: {user.phone}</p>
         <p>Email: {user.email}</p>
-        <button onClick={handleLogout}>Logout</button>
       </div> 
     </div>
   )
