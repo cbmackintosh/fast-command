@@ -7,7 +7,12 @@ import './App.css';
 const App = () => {
   return (
     <Switch>
-      <Route exact path='/' component={Home} />
+      <Route 
+        exact path='/' 
+        render={() => (
+          <Home />
+        )} 
+      />
       <Route 
         exact path='/signup'
         render={props => (
