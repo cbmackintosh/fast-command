@@ -39,7 +39,7 @@ const Signup = (props) => {
   }
 
   const redirect = () => {
-    props.history.push('/')
+    props.history.push('/dashboard')
   }
 
   const handleErrors = () => {
