@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { logoutUserThunk } from '../App/AppSlice'
 import { Link } from 'react-router-dom'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import './Navbar.css'
@@ -19,14 +21,20 @@ export const Navbar = (props) => {
     isCollapsed === true ? setIsCollapsed(false) : setIsCollapsed(true)
   }
 
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logoutUserThunk())
+  }
+
   if (screenWidth > 600) {
     return (
       <div className='navbar'>
-        <Link>Home</Link>
-        <Link>Contacts</Link>
+        <Link to='/dashboard'>Home</Link>
+        <Link to='/contacts'>Contacts</Link>
         <Link>New Incident</Link>
         <Link>Incident History</Link>
-        <button onClick={props.logout}>LOGOUT</button>
+        <button onClick={handleLogout}>LOGOUT</button>
       </div>
     )
   } else if (isCollapsed === true) {
@@ -39,11 +47,11 @@ export const Navbar = (props) => {
     return (
       <div className='navbar'>
         <GiHamburgerMenu onClick={toggleNavbar} />
-        <Link>Home</Link>
-        <Link>Contacts</Link>
+        <Link to='/dashboard'>Home</Link>
+        <Link to='/contacts'>Contacts</Link>
         <Link>New Incident</Link>
         <Link>Incident History</Link>
-        <button onClick={props.logout}>LOGOUT</button>
+        <button onClick={handleLogout}>LOGOUT</button>
       </div>
     )
   }
