@@ -31,3 +31,11 @@ export const signupUser = (user) => {
   })
   .catch(error => console.log('api errors:', error))
 }
+
+export const createNewContact = (contact) => {
+  return axios.post(`${baseURL}/contacts`, {contact})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
