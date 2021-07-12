@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Input from 'react-phone-number-input/input'
 import { useSelector } from 'react-redux'
 import { createNewContact } from '../../api-calls'
+import './NewContactForm.css'
 
 const NewContactForm = () => {
   
@@ -79,7 +80,7 @@ const NewContactForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='new-contact-form' onSubmit={handleSubmit}>
 
       Create new contact:
 
