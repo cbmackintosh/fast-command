@@ -32,7 +32,6 @@ export const loginUserThunk = createAsyncThunk(
 export const logoutUserThunk = createAsyncThunk(
   'userLogout/userLogout',
   async () => {
-    console.log('test')
     const response = await logoutUser()
     return response
   }

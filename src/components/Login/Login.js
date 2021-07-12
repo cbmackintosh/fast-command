@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { loginUserThunk } from '../App/AppSlice'
 
-const Login = () => {
+const Login = (props) => {
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -29,34 +29,40 @@ const Login = () => {
     )
   }
 
-  return (
-    <form onSubmit={handleLogin}>
-      <h1>Login</h1>
-
-      <label htmlFor="email">email</label>
-      <input 
-        type='text' 
-        name='email' 
-        onChange={e => setEmail(e.target.value)}
-        value={email}
-      />
-
-      <label htmlFor="password">password</label>
-      <input 
-        type='password' 
-        name='password'
-        onChange={e => setPassword(e.target.value)}
-        value={password}
-      />
-
-      <button type="submit">LOGIN</button>
-
-      <Link to='/signup'>Signup</Link>
-
-      {errors.length && handleErrors()}
-
-    </form>
-  )
+  if(useSelector(state => state.user.isLoggedIn)) {
+    return (
+      <Redirect to='/dashboard' />
+    )
+  } else {
+    return (
+      <form onSubmit={handleLogin}>
+        <h1>Login</h1>
+  
+        <label htmlFor="email">email</label>
+        <input 
+          type='text' 
+          name='email' 
+          onChange={e => setEmail(e.target.value)}
+          value={email}
+        />
+  
+        <label htmlFor="password">password</label>
+        <input 
+          type='password' 
+          name='password'
+          onChange={e => setPassword(e.target.value)}
+          value={password}
+        />
+  
+        <button type="submit">LOGIN</button>
+  
+        <Link to='/signup'>Signup</Link>
+  
+        {errors.length && handleErrors()}
+  
+      </form>
+    )
+  }
 }
 
 export default Login

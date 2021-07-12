@@ -1,0 +1,22 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  background-color: aqua;
+  padding: 10px;
+  height: 100%;
+  width: 20%;
+}
+
+.collapse-nav {
+  width: 5%;
+  background-color: aqua;
+  padding: 10px;
+  height: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar {
+    position: fixed;
+    width: 50%;
+  }
+}
