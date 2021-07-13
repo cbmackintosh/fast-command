@@ -15,10 +15,16 @@ const ContentSearch = () => {
 
   const compileSearchResults = (qry) => {
     return allContacts
-      .filter(contact => contact.name.toLowerCase().includes(qry.toLowerCase()))
+      .filter(contact => {
+        return contact.name.toLowerCase().includes(qry) ||
+          contact.jobtitle.toLowerCase().includes(qry) ||
+          contact.organization.toLowerCase().includes(qry) ||
+          contact.incident_role.toLowerCase().includes(qry) ||
+          contact.point_of_contact.toLowerCase().includes(qry)
+      })
       .map(contact => {
         return (
-          <div>
+          <div className='search-result'>
             {contact.name}
           </div>
         )
@@ -33,7 +39,7 @@ const ContentSearch = () => {
         onChange={e => setQuery(e.target.value)} 
         value={query}
       />
-      {query.length && compileSearchResults(query)}
+      {query.length && compileSearchResults(query.toLowerCase())}
     </div>
   )
 }
