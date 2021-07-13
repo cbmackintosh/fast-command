@@ -31,3 +31,18 @@ export const signupUser = (user) => {
   })
   .catch(error => console.log('api errors:', error))
 }
+
+export const getAllContacts = (userID) => {
+  return axios.get(`${baseURL}/contacts?user_id=${userID}`)
+  .then(response => {
+    return response.data
+  })
+}
+
+export const createNewContact = (contact) => {
+  return axios.post(`${baseURL}/contacts`, {contact})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
