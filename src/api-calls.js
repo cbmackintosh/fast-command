@@ -46,3 +46,11 @@ export const createNewContact = (contact) => {
   })
   .catch(error => console.log('api errors:', error))
 }
+
+export const createNewIncident = (incident) => {
+  return axios.post(`${baseURL}/incidents`, {incident})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
