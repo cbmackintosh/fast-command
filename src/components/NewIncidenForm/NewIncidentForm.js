@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Navbar } from '../Navbar/Navbar'
 import { createNewIncident } from '../../api-calls'
+import './NewIncidentForm.css'
 
 const NewIncidentForm = () => {
 
@@ -56,9 +57,9 @@ const NewIncidentForm = () => {
   }
 
   return (
-    <div>
+    <div className='new-incident-menu'>
       <Navbar />
-      <form onSubmit={handleSubmit}>
+      <form className='new-incident-form' onSubmit={handleSubmit}>
 
         DECLARE NEW INCIDENT:
 
