@@ -63,3 +63,11 @@ export const getUserIncidents = (userID) => {
   })
   .catch(error => console.log('api errors:', error))
 }
+
+export const getIncidentBySlug = (slug) => {
+  return axios.get(`${baseURL}/incidents/${slug}`)
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
