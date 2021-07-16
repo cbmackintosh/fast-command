@@ -10,8 +10,6 @@ const PublicPage = ({ slug }) => {
     .then(response => setIncident(response.incident))
   }, [slug])
   
-
-  console.log(incident)
   return (
     <div>
       This is a public incident page for {incident.name}
