@@ -37,6 +37,7 @@ export const getAllContacts = (userID) => {
   .then(response => {
     return response.data
   })
+  .catch(error => console.log('api errors:', error))
 }
 
 export const createNewContact = (contact) => {
@@ -49,6 +50,14 @@ export const createNewContact = (contact) => {
 
 export const createNewIncident = (incident) => {
   return axios.post(`${baseURL}/incidents`, {incident})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
+
+export const getUserIncidents = (userID) => {
+  return axios.get(`${baseURL}/incidents?user_id=${userID}`)
   .then(response => {
     return response.data
   })

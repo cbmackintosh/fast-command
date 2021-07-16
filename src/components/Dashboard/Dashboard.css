@@ -2,3 +2,8 @@
   display: flex;
   height: 100%;
 }
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+}
