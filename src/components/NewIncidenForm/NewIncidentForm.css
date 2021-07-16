@@ -1,9 +1,9 @@
-.dashboard {
+.new-incident-menu {
   display: flex;
   height: 100%;
 }
 
-.profile-container {
+.new-incident-form {
   display: flex;
   flex-direction: column;
 }

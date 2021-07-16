@@ -37,10 +37,35 @@ export const getAllContacts = (userID) => {
   .then(response => {
     return response.data
   })
+  .catch(error => console.log('api errors:', error))
 }
 
 export const createNewContact = (contact) => {
   return axios.post(`${baseURL}/contacts`, {contact})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
+
+export const createNewIncident = (incident) => {
+  return axios.post(`${baseURL}/incidents`, {incident})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
+
+export const getUserIncidents = (userID) => {
+  return axios.get(`${baseURL}/incidents?user_id=${userID}`)
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
+
+export const getIncidentBySlug = (slug) => {
+  return axios.get(`${baseURL}/incidents/${slug}`)
   .then(response => {
     return response.data
   })

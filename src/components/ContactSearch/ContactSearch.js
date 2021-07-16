@@ -18,9 +18,9 @@ const ContentSearch = () => {
       .filter(contact => {
         return contact.name.toLowerCase().includes(qry) ||
           contact.jobtitle.toLowerCase().includes(qry) ||
-          contact.organization.toLowerCase().includes(qry) ||
-          contact.incident_role.toLowerCase().includes(qry) ||
-          contact.point_of_contact.toLowerCase().includes(qry)
+          contact.organization.toLowerCase().includes(qry)
+          // contact.incident_role.toLowerCase().includes(qry) ||
+          // contact.point_of_contact.toLowerCase().includes(qry)
       })
       .map(contact => {
         return (
