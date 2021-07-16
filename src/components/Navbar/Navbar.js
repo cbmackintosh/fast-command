@@ -32,7 +32,7 @@ export const Navbar = (props) => {
       <div className='navbar'>
         <Link to='/dashboard'>Home</Link>
         <Link to='/contacts'>Contacts</Link>
-        <Link>New Incident</Link>
+        <Link to='/new-incident'>New Incident</Link>
         <Link>Incident History</Link>
         <button onClick={handleLogout}>LOGOUT</button>
       </div>

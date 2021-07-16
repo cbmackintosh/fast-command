@@ -5,6 +5,7 @@ import Signup from '../Signup/Signup'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
 import ContactsMenu from '../ContactsMenu/ContactsMenu'
+import NewIncidentForm from '../NewIncidenForm/NewIncidentForm'
 
 import './App.css';
 
@@ -31,6 +32,10 @@ const App = () => {
       <PrivateRoute
         exact path='/contacts'
         component={ContactsMenu}
+      />
+      <PrivateRoute
+        exact path='/new-incident'
+        component={NewIncidentForm}
       />
     </Switch>
   );
