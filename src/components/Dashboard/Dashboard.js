@@ -1,12 +1,19 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Navbar } from '../Navbar/Navbar'
 import IncidentsList from '../IncidentsList/IncidentsList'
+import { getUserIncidentsThunk } from './DashboardSlice'
 import './Dashboard.css'
 
 const Dashboard = () => {
 
   const user = useSelector(state => state.user.user)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getUserIncidentsThunk(user.id))
+  }, [dispatch, user.id])
   
   return (
     <div className='dashboard'>

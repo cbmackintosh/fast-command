@@ -25,9 +25,11 @@ export const slice = createSlice({
       .addCase(getUserIncidentsThunk.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(getUsersIncidents.fulfilled, (state, action) => {
+      .addCase(getUserIncidentsThunk.fulfilled, (state, action) => {
         state.status = 'idle'
         state.incidents = action.payload.incidents
       })
   }
 })
+
+export default slice.reducer
