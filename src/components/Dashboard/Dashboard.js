@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <div className='dashboard'>
       <Navbar />
-      <div className='profile-info'>
+      <div className='profile-container'>
         <h1>{user.firstname} {user.lastname}</h1>
         <p>{user.jobtitle} - {user.organization}</p>
         <p>Phone: {user.phone}</p>

@@ -20,7 +20,7 @@ const NewIncidentForm = () => {
     const incident = {
       user_id: userID,
       name: name,
-      type: type,
+      incident_type: type,
       location: location,
       summary: summary
     }
