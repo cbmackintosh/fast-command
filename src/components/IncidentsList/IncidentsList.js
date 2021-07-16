@@ -11,7 +11,7 @@ const IncidentsList = ({ areResolved }) => {
   const compileIncidentList = () => {
     return incidents.map(incident => {
       return (
-        <div>
+        <div key={incident.id}>
           <h2>{incident.name}</h2>
           <p>{incident.incident_type}</p>
           <p>{incident.location}</p>

@@ -33,7 +33,7 @@ export const Navbar = (props) => {
         <Link to='/dashboard'>Home</Link>
         <Link to='/contacts'>Contacts</Link>
         <Link to='/new-incident'>New Incident</Link>
-        <Link>Incident History</Link>
+        <Link to='/incident-history'>Incident History</Link>
         <button onClick={handleLogout}>LOGOUT</button>
       </div>
     )
@@ -49,8 +49,8 @@ export const Navbar = (props) => {
         <GiHamburgerMenu onClick={toggleNavbar} />
         <Link to='/dashboard'>Home</Link>
         <Link to='/contacts'>Contacts</Link>
-        <Link>New Incident</Link>
-        <Link>Incident History</Link>
+        <Link to='/new-incident'>New Incident</Link>
+        <Link to='/incident-history'>Incident History</Link>
         <button onClick={handleLogout}>LOGOUT</button>
       </div>
     )
