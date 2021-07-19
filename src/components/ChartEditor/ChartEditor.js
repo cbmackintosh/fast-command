@@ -1,76 +1,51 @@
 import React, { Component } from 'react'
+import { getIncidentContacts } from '../../api-calls'
 import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType, Colors } from 'basicprimitives';
 import './ChartEditor.css'
-import { GiHamburgerMenu } from 'react-icons/gi'
-import { BiUserCircle } from 'react-icons/bi'
 
+import { render } from '@testing-library/react';
+import { nodeTemplates } from './NodeTemplates';
 
-
-class ChartEditor extends Component {
-  render() {
-    const config = {
-      pageFitMode: PageFitMode.FitToPage,
-      cursorItem: 0,
-      highlightItem: 0,
-      arrowsDirection: GroupByType.Children,
-      hasSelectorCheckbox: Enabled.False,
-      hasButtons: Enabled.True,
-      buttonsPanelSize: 40,
-      onButtonsRender: (({ context: itemConfig }) => {
-        if (itemConfig.id > 5) {
-          return <>
-            <button onClick={() => console.log('button clicked!')}>
-              <GiHamburgerMenu />
-            </button>
-          </>
-        }
-      }),
-      templates: [{
-        name: 'contactTemplate',
-        itemSize: { width: 220, height: 120 },
-        onItemRender: ({ context: itemConfig }) => {
-          return <div className="ContactTemplate">
-            <div className="ContactTitleBackground">
-              <div className="ContactTitle">{itemConfig.title}</div>
-            </div>
-            <div className="ContactPhotoFrame">
-              <BiUserCircle />
-            </div>
-            <div className="ContactDescription">{itemConfig.description}</div>
-            <div className="ContactPhone">Phone: {itemConfig.phone}</div>
-            <div className="ContactEmail">Email: {itemConfig.email}</div>
-          </div>; 
-        }
-      }],
-      items: [
+export default class ChartEditor extends Component {
+  constructor({ incidentID }) {
+    super()
+    this.state = {
+      incidentID: incidentID,
+      incidentContacts: [
         {
           id: 0,
           parent: null,
           title: 'Incident Commander',
-          description: 'Unassigned',
-          image: '/api/images/photos/a.png',
-          email: 'test@test.org',
+          name: 'Unassigned',
+          email: '',
           phone: '',
-          templateName: 'contactTemplate'
+          contact_type: 'Person',
+          templateName: 'incident_commander'
         },
         {
           id: 1,
           parent: 0,
+          title: 'Liaison Officer',
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
           itemType: ItemType.Assistant,
           adviserPlacementType: AdviserPlacementType.Right,
-          title: 'Liaison Officer',
-          description: 'Unassigned',
-          image: '/api/images/photos/b.png'
+          templateName: 'command_staff'
         },
         {
           id: 2,
           parent: 0,
-          itemType: ItemType.Assistant,
-          adviserPlacementType: AdviserPlacementType.Left,
           title: 'Public Information Officer',
-          description: 'Unassigned',
-          image: '/api/images/photos/c.png'
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
+          itemType: ItemType.Assistant,
+          adviserPlacementType: AdviserPlacementType.Left, 
+          templateName: 'command_staff' 
         },
         {
           id: 3,
@@ -84,11 +59,14 @@ class ChartEditor extends Component {
           id: 4,
           parent: 3,
           title: 'Safety Officer',
-          description: 'Unassigned',
-          image: '/api/images/photos/c.png',
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
           itemType: ItemType.Assistant,
           adviserPlacementType: AdviserPlacementType.Right,
-          hasButtons: Enabled.True
+          hasButtons: Enabled.True,
+          templateName: 'command_staff'
         },
         {
           id: 5,
@@ -102,37 +80,87 @@ class ChartEditor extends Component {
           id: 6,
           parent: 5,
           title: 'Operations Chief',
-          description: 'Unassigned',
-          image: '/api/images/photos/c.png'
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
+          templateName: 'section_commander'
         },
         {
           id: 7,
           parent: 5,
           title: 'Logistics Chief',
-          description: 'Unassigned',
-          image: '/api/images/photos/c.png'
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
+          templateName: 'section_commander'
         },
         {
           id: 8,
           parent: 5,
           title: 'Planning Chief',
-          description: 'Unassigned',
-          image: '/api/images/photos/c.png'
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
+          templateName: 'section_commander'
         },
         {
           id: 9,
           parent: 5,
           title: 'Finance Chief',
-          description: 'Unassigned',
-          image: '/api/images/photos/c.png'
+          name: 'Unassigned',
+          email: '',
+          phone: '',
+          contact_type: 'Person',
+          templateName: 'section_commander'
         }
       ]
-    };
-
-    return <div className="placeholder">
-      <OrgDiagram centerOnCursor={true} config={config} />
-    </div>
+    }
   }
-}
 
-export default ChartEditor;
+  componentDidMount() {
+    getIncidentContacts(this.state.incidentID)
+    .then(data => data.contacts.forEach(contact => {
+      let workingArray = this.state.incidentContacts
+      let updateRole = workingArray.find(role => role.id === contact.incident_role)
+      updateRole.name = contact.name
+      updateRole.email = contact.email
+      updateRole.phone = contact.phone
+      this.setState({ incidentContacts: workingArray })
+    }))
+  }
+
+  compileChartNodes() {
+    return this.state.incidentContacts.map(contact => {
+      return {
+        id: contact.incident_role,
+        parent: contact.incident_parent,
+
+      }
+    })
+  }
+
+  render() {
+    
+    const config = {
+      pageFitMode: PageFitMode.FitToPage,
+      cursorItem: 0,
+      highlightItem: 0,
+      arrowsDirection: GroupByType.Children,
+      hasSelectorCheckbox: Enabled.False,
+      hasButtons: Enabled.True,
+      buttonsPanelSize: 40,
+      templates: nodeTemplates,
+      items: this.state.incidentContacts
+    }
+
+    return (
+      <div className='chart-editor'>
+        <OrgDiagram centerOnCursor={true} config={config} />
+      </div>
+    )
+  }
+
+}
