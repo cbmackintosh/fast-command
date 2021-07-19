@@ -2917,6 +2917,19 @@
   "resolved" "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz"
   "version" "1.5.1"
 
+"basicprimitives@6.4.0":
+  "integrity" "sha512-NJbcLDin0jqpNB+FNEZ7xO7L0YTaMqBp0oB/FtjMH0NPSjelFr8LTv5tLKpYjpQ/o/6gowMEYqrj8Uz91gmhvw=="
+  "resolved" "https://registry.npmjs.org/basicprimitives/-/basicprimitives-6.4.0.tgz"
+  "version" "6.4.0"
+
+"basicprimitivesreact@^6.4.1":
+  "integrity" "sha512-V6McF0Yg/0qBPCJ60uX3tJxNLbvmMoWBLuZ/SIoGeCKNd67XCbAqHMmaw8tRIvpCXM4xf397sOQH3sM4fdwOWA=="
+  "resolved" "https://registry.npmjs.org/basicprimitivesreact/-/basicprimitivesreact-6.4.1.tgz"
+  "version" "6.4.1"
+  dependencies:
+    "basicprimitives" "6.4.0"
+    "resize-observer-polyfill" "^1.5.1"
+
 "batch@0.6.1":
   "integrity" "sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY="
   "resolved" "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz"
@@ -9967,6 +9980,11 @@
   "integrity" "sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA=="
   "resolved" "https://registry.npmjs.org/reselect/-/reselect-4.0.0.tgz"
   "version" "4.0.0"
+
+"resize-observer-polyfill@^1.5.1":
+  "integrity" "sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg=="
+  "resolved" "https://registry.npmjs.org/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz"
+  "version" "1.5.1"
 
 "resolve-cwd@^2.0.0":
   "integrity" "sha1-AKn3OHVW4nA46uIyyqNypqWbZlo="
