@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getIncidentBySlug } from '../../api-calls'
+import ChartEditor from '../ChartEditor/ChartEditor'
 
 const IncidentManager = ({ slug }) => {
   
@@ -17,7 +18,7 @@ const IncidentManager = ({ slug }) => {
       {incident.incident_type}
       {incident.location}
       {incident.summary}
-      <textarea />
+      <ChartEditor />
     </div>
   )
 }
