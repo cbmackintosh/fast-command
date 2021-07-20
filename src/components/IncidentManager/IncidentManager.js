@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getIncidentBySlug } from '../../api-calls'
 import ChartEditor from '../ChartEditor/ChartEditor'
+import { formatDate } from '../../utils'
 
 const IncidentManager = ({ slug }) => {
   

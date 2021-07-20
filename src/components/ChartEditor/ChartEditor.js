@@ -21,7 +21,7 @@ export default class ChartEditor extends Component {
           email: '',
           phone: '',
           contact_type: 'Person',
-          templateName: 'incident_commander'
+          templateName: 'incident_commander',
         },
         {
           id: 1,
@@ -33,7 +33,8 @@ export default class ChartEditor extends Component {
           contact_type: 'Person',
           itemType: ItemType.Assistant,
           adviserPlacementType: AdviserPlacementType.Right,
-          templateName: 'command_staff'
+          templateName: 'command_staff',
+          isVisible: false
         },
         {
           id: 2,
@@ -45,13 +46,14 @@ export default class ChartEditor extends Component {
           contact_type: 'Person',
           itemType: ItemType.Assistant,
           adviserPlacementType: AdviserPlacementType.Left, 
-          templateName: 'command_staff' 
+          templateName: 'command_staff',
+          isVisible: false 
         },
         {
           id: 3,
           parent: 0,
           isVisible: false,
-          title: 'Aggregator',
+          title: 'aggregator',
           description: 'Invisible aggregator',
           childrenPlacementType: ChildrenPlacementType.Horizontal
         },
@@ -66,13 +68,14 @@ export default class ChartEditor extends Component {
           itemType: ItemType.Assistant,
           adviserPlacementType: AdviserPlacementType.Right,
           hasButtons: Enabled.True,
-          templateName: 'command_staff'
+          templateName: 'command_staff',
+          isVisible: false
         },
         {
           id: 5,
           parent: 3,
           isVisible: false,
-          title: 'Aggregator2',
+          title: 'aggregator',
           description: 'Invisible aggregator 2',
           childrenPlacementType: ChildrenPlacementType.Horizontal
         },
@@ -84,7 +87,8 @@ export default class ChartEditor extends Component {
           email: '',
           phone: '',
           contact_type: 'Person',
-          templateName: 'section_commander'
+          templateName: 'section_commander',
+          isVisible: false
         },
         {
           id: 7,
@@ -94,7 +98,8 @@ export default class ChartEditor extends Component {
           email: '',
           phone: '',
           contact_type: 'Person',
-          templateName: 'section_commander'
+          templateName: 'section_commander',
+          isVisible: false
         },
         {
           id: 8,
@@ -104,7 +109,8 @@ export default class ChartEditor extends Component {
           email: '',
           phone: '',
           contact_type: 'Person',
-          templateName: 'section_commander'
+          templateName: 'section_commander',
+          isVisible: false
         },
         {
           id: 9,
@@ -114,7 +120,8 @@ export default class ChartEditor extends Component {
           email: '',
           phone: '',
           contact_type: 'Person',
-          templateName: 'section_commander'
+          templateName: 'section_commander',
+          isVisible: false
         }
       ]
     }
@@ -128,22 +135,15 @@ export default class ChartEditor extends Component {
       updateRole.name = contact.name
       updateRole.email = contact.email
       updateRole.phone = contact.phone
+      if (updateRole.id === 0) {
+        workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
+      }
       this.setState({ incidentContacts: workingArray })
     }))
   }
 
-  compileChartNodes() {
-    return this.state.incidentContacts.map(contact => {
-      return {
-        id: contact.incident_role,
-        parent: contact.incident_parent,
-
-      }
-    })
-  }
-
   render() {
-    
+    console.log(this.state)
     const config = {
       pageFitMode: PageFitMode.FitToPage,
       cursorItem: 0,
