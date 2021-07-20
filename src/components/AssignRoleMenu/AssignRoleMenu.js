@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getAllContacts, assignContactToIncident } from '../../api-calls'
+import { getAllContacts, updateContactAssignment } from '../../api-calls'
 import { BiUserCircle } from 'react-icons/bi'
 
 const AssignRoleMenu = (props) => {
-  console.log(props)
+
   const [availableContacts, setAvailableContacts] = useState([])
   const [selectedContact, setSelectedContact] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const userID = useSelector(state => state.user.user.id)
 
-  useEffect(() => {
+  const refreshContacts = () => {
     getAllContacts(userID)
     .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
-  }, [userID])
+  }
+
+  useEffect(() => {
+    refreshContacts()
+  }, [])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -31,9 +35,11 @@ const AssignRoleMenu = (props) => {
   }
 
   const assignContactToRole = () => {
-    assignContactToIncident(selectedContact.id, props.role.id, props.incidentID)
+    updateContactAssignment(selectedContact.id, props.role.id, props.incidentID)
     .then(response => {
       if (response.status === "updated") {
+        setSelectedContact(null)
+        refreshContacts()
         props.onHide()
       }
     })

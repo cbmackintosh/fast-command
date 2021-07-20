@@ -80,7 +80,7 @@ export const getIncidentContacts = (incidentID) => {
   .catch(error => console.log('api errors:', error))
 }
 
-export const assignContactToIncident = (contactID, roleID, incidentID) => {
+export const updateContactAssignment = (contactID, roleID, incidentID) => {
   return axios.put(`${baseURL}/contacts/${contactID}`, {'incident_id': incidentID, 'incident_role': roleID})
   .then(response => {
     return response.data
