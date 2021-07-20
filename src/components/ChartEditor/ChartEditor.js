@@ -3,15 +3,21 @@ import { getIncidentContacts } from '../../api-calls'
 import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType, Colors } from 'basicprimitives';
 import './ChartEditor.css'
-
+import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete } from 'react-icons/ai'
+import { BiUserCircle } from 'react-icons/bi'
 import { render } from '@testing-library/react';
 import { nodeTemplates } from './NodeTemplates';
+import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 
 export default class ChartEditor extends Component {
   constructor({ incidentID }) {
     super()
     this.state = {
       incidentID: incidentID,
+      assignmentMenu: {
+        isVisible: false,
+        role: null
+      },
       incidentContacts: [
         {
           id: 0,
@@ -152,13 +158,53 @@ export default class ChartEditor extends Component {
       hasSelectorCheckbox: Enabled.False,
       hasButtons: Enabled.True,
       buttonsPanelSize: 40,
-      templates: nodeTemplates,
+      templates: [
+        {
+          name: 'incident_commander',
+          itemSize: { width: 220, height: 150 },
+          onItemRender: ({ context: itemConfig }) => {
+            return (
+              <div className="ContactTemplate">
+                <div className="ContactTitleBackground">
+                  <div className="ContactTitle">{itemConfig.title}</div>
+                </div>
+                <div className="ContactPhotoFrame">
+                  <BiUserCircle />
+                </div>
+                <div className="ContactDescription">{itemConfig.name}</div>
+                <div className="ContactPhone">Phone: {itemConfig.phone}</div>
+                <div className="ContactEmail">Email: {itemConfig.email}</div>
+              </div> 
+            )
+          },
+          onButtonsRender: ({ context: itemConfig }) => {
+            return <>
+              {itemConfig.name === 'Unassigned' && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
+                <AiOutlineUserAdd />
+              </button>}
+              {itemConfig.name !== 'Unassigned' && <button onClick={() => console.log('this button will reassign the incident commander')}>
+                <AiOutlineUserSwitch />
+              </button>}
+            </>
+          }
+        }
+      ],
       items: this.state.incidentContacts
     }
 
     return (
       <div className='chart-editor'>
         <OrgDiagram centerOnCursor={true} config={config} />
+        <AssignRoleMenu 
+          show={this.state.assignmentMenu.isVisible} 
+          role={this.state.assignmentMenu.role}
+          incidentID={this.state.incidentID}
+          onHide={() => {
+            this.setState({ assignmentMenu: { isVisible: false, role: null } })
+            this.componentDidMount()
+          }} 
+          animation={false} 
+        />
       </div>
     )
   }
