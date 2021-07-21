@@ -71,3 +71,19 @@ export const getIncidentBySlug = (slug) => {
   })
   .catch(error => console.log('api errors:', error))
 }
+
+export const getIncidentContacts = (incidentID) => {
+  return axios.get(`${baseURL}/contacts?incident_id=${incidentID}`)
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
+
+export const updateContactAssignment = (contactID, roleID, incidentID) => {
+  return axios.put(`${baseURL}/contacts/${contactID}`, {'incident_id': incidentID, 'incident_role': roleID})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errros:', error))
+}
