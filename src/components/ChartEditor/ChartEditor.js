@@ -3,7 +3,7 @@ import { getIncidentContacts } from '../../api-calls'
 import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType } from 'basicprimitives';
 import './ChartEditor.css'
-import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete, AiFillTablet } from 'react-icons/ai'
 import { BiUserCircle } from 'react-icons/bi'
 import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 import UnassignMenu from '../UnassignMenu/UnassignMenu'
@@ -112,21 +112,30 @@ export default class ChartEditor extends Component {
     }
   }
 
-  componentDidMount() {
+  refreshContacts() {
     getIncidentContacts(this.state.incidentID)
-    .then(data => data.contacts.forEach(contact => {
+    .then(data => {
       let workingArray = this.state.incidentContacts
-      let updateRole = workingArray.find(role => role.id === contact.incident_role)
-      updateRole.contact = contact
-      if (updateRole.id === 0) {
+      workingArray.forEach(role => {
+        if (data.contacts.find(contact => contact.incident_role === role.id)) {
+          role.contact = data.contacts.find(contact => contact.incident_role === role.id)
+        } else {
+          role.contact = null
+        }
+      })
+      if (workingArray[0].contact) {
         workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
       }
       this.setState({ incidentContacts: workingArray })
-    }))
+    })
+  }
+
+  componentDidMount() {
+    this.refreshContacts()
   }
 
   render() {
-    console.log(this.state)
+
     const config = {
       pageFitMode: PageFitMode.FitToPage,
       cursorItem: 0,
@@ -239,22 +248,22 @@ export default class ChartEditor extends Component {
     return (
       <div className='chart-editor'>
         <OrgDiagram centerOnCursor={true} config={config} />
-        <AssignRoleMenu 
+        {this.state.assignmentMenu.isVisible && <AssignRoleMenu 
           show={this.state.assignmentMenu.isVisible} 
           role={this.state.assignmentMenu.role}
           incidentID={this.state.incidentID}
           onHide={() => {
             this.setState({ assignmentMenu: { isVisible: false, role: null } })
-            this.componentDidMount()
+            this.refreshContacts()
           }} 
           animation={false} 
-        />
+        />}
         <UnassignMenu
           show={this.state.unassignMenu.isVisible}
           role={this.state.unassignMenu.role}
           onHide={() => {
             this.setState({ unassignMenu: {isVisible: false, role: null } })
-            this.componentDidMount()
+            this.refreshContacts()
           }}
           animation={false}         
         />

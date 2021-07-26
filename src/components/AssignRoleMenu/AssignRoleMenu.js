@@ -13,6 +13,7 @@ const AssignRoleMenu = (props) => {
   const userID = useSelector(state => state.user.user.id)
 
   const refreshContacts = () => {
+    console.log('test')
     getAllContacts(userID)
     .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
   }
@@ -24,10 +25,9 @@ const AssignRoleMenu = (props) => {
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
       return contact.name.toLowerCase().includes(qry)
-    })
-    .map(contact => {
+    }).map(contact => {
       return (
-        <div onClick={() => setSelectedContact(contact)}>
+        <div key={contact.id} onClick={() => setSelectedContact(contact)}>
           <BiUserCircle /> {contact.name} - {contact.jobtitle} - {contact.organization}
         </div>
       )
