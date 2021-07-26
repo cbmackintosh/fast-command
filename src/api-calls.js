@@ -87,3 +87,4 @@ export const updateContactAssignment = (contactID, roleID, incidentID) => {
   })
   .catch(error => console.log('api errros:', error))
 }
+

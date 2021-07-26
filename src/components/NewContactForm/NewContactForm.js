@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import Input from 'react-phone-number-input/input'
 import { useSelector } from 'react-redux'
 import { createNewContact } from '../../api-calls' 
+import { AiOutlineUser, AiOutlineTeam } from 'react-icons/ai'
+import { FiTruck } from 'react-icons/fi'
+import { GiHelicopter, GiCrane, GiSittingDog } from 'react-icons/gi'
+import { IoMdBoat } from 'react-icons/io'
 import './NewContactForm.css'
 
 const NewContactForm = () => {
@@ -91,13 +95,13 @@ const NewContactForm = () => {
         value={type}
       >
         <option value=''>--select--</option>
-        <option>Person</option>
-        <option>Team</option>
-        <option>Vehicle</option>
-        <option>Aircraft</option>
-        <option>Watercraft</option>
-        <option>Machinery</option>
-        <option>Animal</option>
+        <option>{<AiOutlineUser />}Person</option>
+        <option><AiOutlineTeam />Team</option>
+        <option><FiTruck />Vehicle</option>
+        <option><GiHelicopter />Aircraft</option>
+        <option><IoMdBoat />Watercraft</option>
+        <option><GiCrane />Machinery</option>
+        <option><GiSittingDog />Animal</option>
       </select>
 
       <label htmlFor="name">{type === 'Person' ? 'Name:' : 'Asset Name:'}</label>

@@ -275,6 +275,7 @@ export default class ChartEditor extends Component {
         {this.state.reassignMenu.isVisible && <ReassignMenu
           show={this.state.reassignMenu.isVisible}
           role={this.state.reassignMenu.role}
+          incidentID={this.state.incidentID}
           onHide={() => {
             this.setState({ reassignMenu: { isVisible: false, role: null } })
             this.refreshContacts()

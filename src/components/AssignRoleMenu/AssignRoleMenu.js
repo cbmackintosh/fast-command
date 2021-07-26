@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getAllContacts, updateContactAssignment } from '../../api-calls'
-import { BiUserCircle } from 'react-icons/bi'
+import { returnContactAvatar } from '../../utils'
 
 const AssignRoleMenu = (props) => {
 
@@ -19,7 +19,7 @@ const AssignRoleMenu = (props) => {
 
   useEffect(() => {
     refreshContacts()
-  }, [])
+  }, [refreshContacts])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -27,7 +27,7 @@ const AssignRoleMenu = (props) => {
     }).map(contact => {
       return (
         <div key={contact.id} onClick={() => setSelectedContact(contact)}>
-          <BiUserCircle /> {contact.name} - {contact.jobtitle} - {contact.organization}
+          {returnContactAvatar(contact.contact_type)} {contact.name} - {contact.jobtitle} - {contact.organization}
         </div>
       )
     })
