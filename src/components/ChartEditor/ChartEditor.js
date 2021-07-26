@@ -7,6 +7,7 @@ import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCl
 import { BiUserCircle } from 'react-icons/bi'
 import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 import UnassignMenu from '../UnassignMenu/UnassignMenu'
+import ReassignMenu from '../ReassignMenu/ReassignMenu'
 
 export default class ChartEditor extends Component {
   constructor({ incidentID }) {
@@ -18,6 +19,10 @@ export default class ChartEditor extends Component {
         role: null
       },
       unassignMenu: {
+        isVisible: false,
+        role: null
+      },
+      reassignMenu: {
         isVisible: false,
         role: null
       },
@@ -168,7 +173,7 @@ export default class ChartEditor extends Component {
               {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserAdd />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will reassign the incident commander')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
             </>
@@ -197,7 +202,7 @@ export default class ChartEditor extends Component {
               {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserAdd />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will reassign this node')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
               {itemConfig.contact  && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
@@ -229,10 +234,10 @@ export default class ChartEditor extends Component {
               {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserAdd />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will reassign this node')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will unassign this node')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserDelete />
               </button>}
               {itemConfig.contact && <button onClick={() => console.log('this button will add a new node to this parent')}>
@@ -262,11 +267,20 @@ export default class ChartEditor extends Component {
           show={this.state.unassignMenu.isVisible}
           role={this.state.unassignMenu.role}
           onHide={() => {
-            this.setState({ unassignMenu: {isVisible: false, role: null } })
+            this.setState({ unassignMenu: { isVisible: false, role: null } })
             this.refreshContacts()
           }}
           animation={false}         
         />
+        {this.state.reassignMenu.isVisible && <ReassignMenu
+          show={this.state.reassignMenu.isVisible}
+          role={this.state.reassignMenu.role}
+          onHide={() => {
+            this.setState({ reassignMenu: { isVisible: false, role: null } })
+            this.refreshContacts()
+          }}
+          animation={false}
+        />}
       </div>
     )
   }

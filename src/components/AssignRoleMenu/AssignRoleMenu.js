@@ -13,7 +13,6 @@ const AssignRoleMenu = (props) => {
   const userID = useSelector(state => state.user.user.id)
 
   const refreshContacts = () => {
-    console.log('test')
     getAllContacts(userID)
     .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
   }
