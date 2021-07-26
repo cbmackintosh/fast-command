@@ -6,3 +6,14 @@
 .ContactTemplate {
   border: 2px solid white;
 }
+
+.UnassignedContactTemplate {
+  border: 2px solid darkslateblue;
+}
+
+.UnassignedContactTemplate > .ContactDescription,
+.UnassignedContactTemplate > .ContactPhone,
+.UnassignedContactTemplate > .ContactEmail,
+.UnassignedContactTemplate > .ContactTitleBackground > .ContactTitle {
+  color: darkslateblue;
+}

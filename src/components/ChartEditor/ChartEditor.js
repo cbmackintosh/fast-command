@@ -8,6 +8,7 @@ import { BiUserCircle } from 'react-icons/bi'
 import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 import UnassignMenu from '../UnassignMenu/UnassignMenu'
 import ReassignMenu from '../ReassignMenu/ReassignMenu'
+import { returnContactAvatar } from '../../utils'
 
 export default class ChartEditor extends Component {
   constructor({ incidentID }) {
@@ -160,7 +161,7 @@ export default class ChartEditor extends Component {
                   <div className="ContactTitle">{itemConfig.title}</div>
                 </div>
                 <div className="ContactPhotoFrame">
-                  <BiUserCircle />
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
                 <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
@@ -184,12 +185,12 @@ export default class ChartEditor extends Component {
           itemSize: { width: 220, height: 150 },
           onItemRender: ({ context: itemConfig }) => {
             return (
-              <div className="ContactTemplate">
+              <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
                   <div className="ContactTitle">{itemConfig.title}</div>
                 </div>
                 <div className="ContactPhotoFrame">
-                  <BiUserCircle />
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
                 <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
@@ -215,13 +216,14 @@ export default class ChartEditor extends Component {
           name: 'section_commander',
           itemSize: { width: 220, height: 150 },
           onItemRender: ({ context: itemConfig }) => {
+            console.log(itemConfig)
             return (
-              <div className="ContactTemplate">
+              <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
                   <div className="ContactTitle">{itemConfig.title}</div>
                 </div>
                 <div className="ContactPhotoFrame">
-                  <BiUserCircle />
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
                 <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
