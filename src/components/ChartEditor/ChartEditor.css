@@ -1,8 +1,19 @@
 .chart-editor {
-  height: 700px;
+  height: 2000px;
   border-top: 2px solid white;
 }
 
 .ContactTemplate {
   border: 2px solid white;
+}
+
+.UnassignedContactTemplate {
+  border: 2px solid darkslateblue;
+}
+
+.UnassignedContactTemplate > .ContactDescription,
+.UnassignedContactTemplate > .ContactPhone,
+.UnassignedContactTemplate > .ContactEmail,
+.UnassignedContactTemplate > .ContactTitleBackground > .ContactTitle {
+  color: darkslateblue;
 }

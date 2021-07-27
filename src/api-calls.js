@@ -80,10 +80,12 @@ export const getIncidentContacts = (incidentID) => {
   .catch(error => console.log('api errors:', error))
 }
 
-export const updateContactAssignment = (contactID, roleID, incidentID) => {
-  return axios.put(`${baseURL}/contacts/${contactID}`, {'incident_id': incidentID, 'incident_role': roleID})
+export const updateContactAssignment = (contactID, roleID, incidentID, parentID, incidentTitle) => {
+  console.log(contactID, roleID, incidentID, parentID, incidentTitle)
+  return axios.put(`${baseURL}/contacts/${contactID}`, {'incident_id': incidentID, 'incident_role': roleID, 'incident_parent': parentID, 'incident_title': incidentTitle})
   .then(response => {
     return response.data
   })
   .catch(error => console.log('api errros:', error))
 }
+

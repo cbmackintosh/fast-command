@@ -4,9 +4,11 @@ import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType } from 'basicprimitives';
 import './ChartEditor.css'
 import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete } from 'react-icons/ai'
-import { BiUserCircle } from 'react-icons/bi'
 import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 import UnassignMenu from '../UnassignMenu/UnassignMenu'
+import ReassignMenu from '../ReassignMenu/ReassignMenu'
+import AddNode from '../AddNode/AddNode'
+import { returnContactAvatar } from '../../utils'
 
 export default class ChartEditor extends Component {
   constructor({ incidentID }) {
@@ -20,6 +22,14 @@ export default class ChartEditor extends Component {
       unassignMenu: {
         isVisible: false,
         role: null
+      },
+      reassignMenu: {
+        isVisible: false,
+        role: null
+      },
+      addNode: {
+        isVisible: false,
+        parent: null
       },
       incidentContacts: [
         {
@@ -112,21 +122,56 @@ export default class ChartEditor extends Component {
     }
   }
 
-  componentDidMount() {
+  refreshContacts() {
+    let workingArray = this.state.incidentContacts
+    workingArray.forEach(role => role.contact = null)
     getIncidentContacts(this.state.incidentID)
-    .then(data => data.contacts.forEach(contact => {
-      let workingArray = this.state.incidentContacts
-      let updateRole = workingArray.find(role => role.id === contact.incident_role)
-      updateRole.contact = contact
-      if (updateRole.id === 0) {
-        workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
+    .then(data => data.contacts.map(contact => {
+      let match = workingArray.find(role => role.id === contact.incident_role)
+      if (match) {
+        match.contact = contact
+      } else {
+        let node = {
+          id: contact.incident_role,
+          parent: contact.incident_parent,
+          title: contact.incident_title,
+          contact: contact,
+          templateName: 'section_node',
+          isVisible: false
+        }
+        workingArray.push(node)
+      }
+      if (workingArray[0].contact) {
+        workingArray.forEach(contact => contact.title !== 'aggregator' ? contact.isVisible = true : null)
       }
       this.setState({ incidentContacts: workingArray })
     }))
   }
 
+  // refreshContacts() {
+  //   getIncidentContacts(this.state.incidentID)
+  //   .then(data => {
+  //     let workingArray = this.state.incidentContacts
+  //     workingArray.forEach(role => {
+  //       if (data.contacts.find(contact => contact.incident_role === role.id)) {
+  //         role.contact = data.contacts.find(contact => contact.incident_role === role.id)
+  //       } else {
+  //         role.contact = null
+  //       }
+  //     })
+  //     if (workingArray[0].contact) {
+  //       workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
+  //     }
+  //     this.setState({ incidentContacts: workingArray })
+  //   })
+  // }
+
+  componentDidMount() {
+    this.refreshContacts()
+  }
+
   render() {
-    console.log(this.state)
+
     const config = {
       pageFitMode: PageFitMode.FitToPage,
       cursorItem: 0,
@@ -146,7 +191,7 @@ export default class ChartEditor extends Component {
                   <div className="ContactTitle">{itemConfig.title}</div>
                 </div>
                 <div className="ContactPhotoFrame">
-                  <BiUserCircle />
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
                 <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
@@ -159,7 +204,7 @@ export default class ChartEditor extends Component {
               {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserAdd />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will reassign the incident commander')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
             </>
@@ -170,12 +215,12 @@ export default class ChartEditor extends Component {
           itemSize: { width: 220, height: 150 },
           onItemRender: ({ context: itemConfig }) => {
             return (
-              <div className="ContactTemplate">
+              <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
                   <div className="ContactTitle">{itemConfig.title}</div>
                 </div>
                 <div className="ContactPhotoFrame">
-                  <BiUserCircle />
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
                 <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
@@ -188,7 +233,7 @@ export default class ChartEditor extends Component {
               {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserAdd />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will reassign this node')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
               {itemConfig.contact  && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
@@ -202,12 +247,12 @@ export default class ChartEditor extends Component {
           itemSize: { width: 220, height: 150 },
           onItemRender: ({ context: itemConfig }) => {
             return (
-              <div className="ContactTemplate">
+              <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
                   <div className="ContactTitle">{itemConfig.title}</div>
                 </div>
                 <div className="ContactPhotoFrame">
-                  <BiUserCircle />
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
                 <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
@@ -220,13 +265,48 @@ export default class ChartEditor extends Component {
               {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserAdd />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will reassign this node')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will unassign this node')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserDelete />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will add a new node to this parent')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
+                <AiOutlineCluster />
+              </button>}
+            </>
+          }
+        },
+        {
+          name: 'section_node',
+          itemSize: { width: 220, height: 150 },
+          onItemRender: ({ context: itemConfig }) => {
+            return (
+              <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
+                <div className="ContactTitleBackground">
+                  <div className="ContactTitle">{itemConfig.title}</div>
+                </div>
+                <div className="ContactPhotoFrame">
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
+                </div>
+                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
+                <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
+              </div> 
+            )
+          },
+          onButtonsRender: ({ context: itemConfig }) => {
+            return <>
+              {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
+                <AiOutlineUserAdd />
+              </button>}
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
+                <AiOutlineUserSwitch />
+              </button>}
+              {itemConfig.contact && <button onClick={() => console.log('delete this node!')}>
+                <AiOutlineDelete />
+              </button>}
+              {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
               </button>}
             </>
@@ -239,25 +319,45 @@ export default class ChartEditor extends Component {
     return (
       <div className='chart-editor'>
         <OrgDiagram centerOnCursor={true} config={config} />
-        <AssignRoleMenu 
+        {this.state.assignmentMenu.isVisible && <AssignRoleMenu 
           show={this.state.assignmentMenu.isVisible} 
           role={this.state.assignmentMenu.role}
           incidentID={this.state.incidentID}
           onHide={() => {
             this.setState({ assignmentMenu: { isVisible: false, role: null } })
-            this.componentDidMount()
+            this.refreshContacts()
           }} 
           animation={false} 
-        />
+        />}
         <UnassignMenu
           show={this.state.unassignMenu.isVisible}
           role={this.state.unassignMenu.role}
           onHide={() => {
-            this.setState({ unassignMenu: {isVisible: false, role: null } })
-            this.componentDidMount()
+            this.setState({ unassignMenu: { isVisible: false, role: null } })
+            this.refreshContacts()
           }}
           animation={false}         
         />
+        {this.state.reassignMenu.isVisible && <ReassignMenu
+          show={this.state.reassignMenu.isVisible}
+          role={this.state.reassignMenu.role}
+          incidentID={this.state.incidentID}
+          onHide={() => {
+            this.setState({ reassignMenu: { isVisible: false, role: null } })
+            this.refreshContacts()
+          }}
+          animation={false}
+        />}
+        {this.state.addNode.isVisible && <AddNode
+          show={this.state.addNode.isVisible}
+          onHide={() => {
+            this.setState({ addNode: { isVisible: false, parent: null } })
+            this.refreshContacts()
+          }}
+          parent={this.state.addNode.parent}
+          incidentID={this.state.incidentID}
+          animation={false}
+        />}
       </div>
     )
   }

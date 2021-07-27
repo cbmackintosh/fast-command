@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const UnassignMenu = (props) => {
   
   const unassignContact = () => {
-    console.log('test')
+
     updateContactAssignment(props.role.contact.id, null, null)
     .then(response => {
       if (response.status === 'updated') {
@@ -23,6 +23,8 @@ const UnassignMenu = (props) => {
         aria-labelledby="contained-modal-title-vcenter"
         backdrop="static"
       >
+        <Modal.Header closeButton>
+        </Modal.Header>
         <Modal.Body>
           <p>Unassign {props.role.contact.name} as {props.role.title}?</p>
           <button onClick={unassignContact}>CONFIRM</button>

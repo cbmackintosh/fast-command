@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Modal } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { getAllContacts, updateContactAssignment } from '../../api-calls'
 import { returnContactAvatar } from '../../utils'
 
-const AssignRoleMenu = (props) => {
-
+const ReassignMenu = (props) => {
+  console.log(props)
   const [availableContacts, setAvailableContacts] = useState([])
   const [selectedContact, setSelectedContact] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const userID = useSelector(state => state.user.user.id)
-
+  
   const refreshContacts = () => {
     getAllContacts(userID)
     .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
@@ -19,7 +18,7 @@ const AssignRoleMenu = (props) => {
 
   useEffect(() => {
     refreshContacts()
-  }, [refreshContacts])
+  }, [])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -33,17 +32,20 @@ const AssignRoleMenu = (props) => {
     })
   }
 
-  const assignContactToRole = () => {
-    updateContactAssignment(selectedContact.id, props.role.id, props.incidentID)
+  const reassignContact = () => {
+    Promise.all([
+      updateContactAssignment(selectedContact.id, props.role.id, props.incidentID),
+      updateContactAssignment(props.role.contact.id, null, null) 
+    ])
     .then(response => {
-      if (response.status === "updated") {
+      if (response[0].status === "updated" && response[1].status === "updated") {
         setSelectedContact(null)
         refreshContacts()
         props.onHide()
       }
     })
   }
-
+  
   if (props.show && !selectedContact) {
     return (
       <Modal
@@ -54,7 +56,7 @@ const AssignRoleMenu = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Assign your {props.role.title}
+            Replace {props.role.contact.name} as {props.role.title}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -75,14 +77,14 @@ const AssignRoleMenu = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Assign your {props.role.title}
+            Replace {props.role.title}?
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>Assign {selectedContact.name} as {props.role.title}? </div>
+          <div>Replace {props.role.contact.name} with {selectedContact.name} as {props.role.title}? </div>
         </Modal.Body>
         <Modal.Footer>
-          <button onClick={assignContactToRole}>CONFIRM</button>
+          <button onClick={() => reassignContact()}>CONFIRM</button>
           <button onClick={() => setSelectedContact(null)}>BACK</button>
         </Modal.Footer>
       </Modal>
@@ -92,4 +94,4 @@ const AssignRoleMenu = (props) => {
   }
 }
 
-export default AssignRoleMenu
+export default ReassignMenu
