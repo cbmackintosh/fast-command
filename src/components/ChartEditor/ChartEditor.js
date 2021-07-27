@@ -3,7 +3,7 @@ import { getIncidentContacts } from '../../api-calls'
 import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType } from 'basicprimitives';
 import './ChartEditor.css'
-import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete, AiFillTablet } from 'react-icons/ai'
+import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete } from 'react-icons/ai'
 import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 import UnassignMenu from '../UnassignMenu/UnassignMenu'
 import ReassignMenu from '../ReassignMenu/ReassignMenu'
@@ -303,8 +303,8 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserDelete />
+              {itemConfig.contact && <button onClick={() => console.log('delete this node!')}>
+                <AiOutlineDelete />
               </button>}
               {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
@@ -350,7 +350,10 @@ export default class ChartEditor extends Component {
         />}
         {this.state.addNode.isVisible && <AddNode
           show={this.state.addNode.isVisible}
-          onHide={() => this.setState({ addNode: { isVisible: false, parent: null } })}
+          onHide={() => {
+            this.setState({ addNode: { isVisible: false, parent: null } })
+            this.refreshContacts()
+          }}
           parent={this.state.addNode.parent}
           incidentID={this.state.incidentID}
           animation={false}

@@ -40,9 +40,9 @@ const AddNode = (props) => {
     updateContactAssignment(selectedContact.id, Date.now(), props.incidentID, props.parent.id, incidentTitle)
     .then (response => {
       if (response.status === 'updated') {
+        setConfirmationVisibility(false)
         setSelectedContact(null)
         refreshContacts()
-        setConfirmationVisibility(false)
         props.onHide()
       }
     })

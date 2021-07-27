@@ -2,10 +2,6 @@ import React, { useState } from 'react'
 import Input from 'react-phone-number-input/input'
 import { useSelector } from 'react-redux'
 import { createNewContact } from '../../api-calls' 
-import { AiOutlineUser, AiOutlineTeam } from 'react-icons/ai'
-import { FiTruck } from 'react-icons/fi'
-import { GiHelicopter, GiCrane, GiSittingDog } from 'react-icons/gi'
-import { IoMdBoat } from 'react-icons/io'
 import './NewContactForm.css'
 
 const NewContactForm = () => {
