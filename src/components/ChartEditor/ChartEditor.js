@@ -4,10 +4,10 @@ import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType } from 'basicprimitives';
 import './ChartEditor.css'
 import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete, AiFillTablet } from 'react-icons/ai'
-import { BiUserCircle } from 'react-icons/bi'
 import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
 import UnassignMenu from '../UnassignMenu/UnassignMenu'
 import ReassignMenu from '../ReassignMenu/ReassignMenu'
+import AddNode from '../AddNode/AddNode'
 import { returnContactAvatar } from '../../utils'
 
 export default class ChartEditor extends Component {
@@ -26,6 +26,10 @@ export default class ChartEditor extends Component {
       reassignMenu: {
         isVisible: false,
         role: null
+      },
+      addNode: {
+        isVisible: false,
+        parent: null
       },
       incidentContacts: [
         {
@@ -216,7 +220,6 @@ export default class ChartEditor extends Component {
           name: 'section_commander',
           itemSize: { width: 220, height: 150 },
           onItemRender: ({ context: itemConfig }) => {
-            console.log(itemConfig)
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
@@ -242,7 +245,7 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserDelete />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('this button will add a new node to this parent')}>
+              {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
               </button>}
             </>
@@ -284,6 +287,13 @@ export default class ChartEditor extends Component {
           }}
           animation={false}
         />}
+        <AddNode
+          show={this.state.addNode.isVisible}
+          onHide={() => this.setState({ addNode: { isVisible: false, parent: null } })}
+          parent={this.state.addNode.parent}
+          incidentID={this.state.incidentID}
+          animation={false}
+        />
       </div>
     )
   }
