@@ -123,22 +123,47 @@ export default class ChartEditor extends Component {
   }
 
   refreshContacts() {
+    let workingArray = this.state.incidentContacts
     getIncidentContacts(this.state.incidentID)
-    .then(data => {
-      let workingArray = this.state.incidentContacts
-      workingArray.forEach(role => {
-        if (data.contacts.find(contact => contact.incident_role === role.id)) {
-          role.contact = data.contacts.find(contact => contact.incident_role === role.id)
-        } else {
-          role.contact = null
+    .then(data => data.contacts.map(contact => {
+      let match = workingArray.find(role => role.id === contact.incident_role)
+      if (match) {
+        match.contact = contact
+      } else {
+        let node = {
+          id: contact.incident_role,
+          parent: contact.incident_parent,
+          title: contact.incident_title,
+          contact: contact,
+          templateName: 'section_node',
+          isVisible: false
         }
-      })
+        workingArray.push(node)
+      }
       if (workingArray[0].contact) {
-        workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
+        workingArray.forEach(contact => contact.title !== 'aggregator' ? contact.isVisible = true : null)
       }
       this.setState({ incidentContacts: workingArray })
-    })
+    }))
   }
+
+  // refreshContacts() {
+  //   getIncidentContacts(this.state.incidentID)
+  //   .then(data => {
+  //     let workingArray = this.state.incidentContacts
+  //     workingArray.forEach(role => {
+  //       if (data.contacts.find(contact => contact.incident_role === role.id)) {
+  //         role.contact = data.contacts.find(contact => contact.incident_role === role.id)
+  //       } else {
+  //         role.contact = null
+  //       }
+  //     })
+  //     if (workingArray[0].contact) {
+  //       workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
+  //     }
+  //     this.setState({ incidentContacts: workingArray })
+  //   })
+  // }
 
   componentDidMount() {
     this.refreshContacts()
