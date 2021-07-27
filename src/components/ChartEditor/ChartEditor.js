@@ -124,6 +124,7 @@ export default class ChartEditor extends Component {
 
   refreshContacts() {
     let workingArray = this.state.incidentContacts
+    workingArray.forEach(role => role.contact = null)
     getIncidentContacts(this.state.incidentID)
     .then(data => data.contacts.map(contact => {
       let match = workingArray.find(role => role.id === contact.incident_role)
@@ -243,6 +244,41 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'section_commander',
+          itemSize: { width: 220, height: 150 },
+          onItemRender: ({ context: itemConfig }) => {
+            return (
+              <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
+                <div className="ContactTitleBackground">
+                  <div className="ContactTitle">{itemConfig.title}</div>
+                </div>
+                <div className="ContactPhotoFrame">
+                  {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
+                </div>
+                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
+                <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
+              </div> 
+            )
+          },
+          onButtonsRender: ({ context: itemConfig }) => {
+            return <>
+              {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
+                <AiOutlineUserAdd />
+              </button>}
+              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
+                <AiOutlineUserSwitch />
+              </button>}
+              {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
+                <AiOutlineUserDelete />
+              </button>}
+              {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
+                <AiOutlineCluster />
+              </button>}
+            </>
+          }
+        },
+        {
+          name: 'section_node',
           itemSize: { width: 220, height: 150 },
           onItemRender: ({ context: itemConfig }) => {
             return (
