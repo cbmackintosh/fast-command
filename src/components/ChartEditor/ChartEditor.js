@@ -287,13 +287,13 @@ export default class ChartEditor extends Component {
           }}
           animation={false}
         />}
-        <AddNode
+        {this.state.addNode.isVisible && <AddNode
           show={this.state.addNode.isVisible}
           onHide={() => this.setState({ addNode: { isVisible: false, parent: null } })}
           parent={this.state.addNode.parent}
           incidentID={this.state.incidentID}
           animation={false}
-        />
+        />}
       </div>
     )
   }
