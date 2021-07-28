@@ -11,10 +11,10 @@ import AddNode from '../AddNode/AddNode'
 import { returnContactAvatar } from '../../utils'
 
 export default class ChartEditor extends Component {
-  constructor({ incidentID }) {
+  constructor({ incident_id }) {
     super()
     this.state = {
-      incidentID: incidentID,
+      incident_id: incident_id,
       assignmentMenu: {
         isVisible: false,
         role: null
@@ -123,9 +123,95 @@ export default class ChartEditor extends Component {
   }
 
   refreshContacts() {
-    let workingArray = this.state.incidentContacts
-    workingArray.forEach(role => role.contact = null)
-    getIncidentContacts(this.state.incidentID)
+    let workingArray = [
+      {
+        id: 0,
+        parent: null,
+        title: 'Incident Commander',
+        contact: null,
+        templateName: 'incident_commander',
+      },
+      {
+        id: 1,
+        parent: 0,
+        title: 'Liaison Officer',
+        contact: null,
+        itemType: ItemType.Assistant,
+        adviserPlacementType: AdviserPlacementType.Right,
+        templateName: 'command_staff',
+        isVisible: false
+      },
+      {
+        id: 2,
+        parent: 0,
+        title: 'Public Information Officer',
+        contact: null,
+        itemType: ItemType.Assistant,
+        adviserPlacementType: AdviserPlacementType.Left, 
+        templateName: 'command_staff',
+        isVisible: false 
+      },
+      {
+        id: 3,
+        parent: 0,
+        isVisible: false,
+        title: 'aggregator',
+        description: 'Invisible aggregator',
+        childrenPlacementType: ChildrenPlacementType.Horizontal
+      },
+      {
+        id: 4,
+        parent: 3,
+        title: 'Safety Officer',
+        contact: null,
+        itemType: ItemType.Assistant,
+        adviserPlacementType: AdviserPlacementType.Right,
+        hasButtons: Enabled.True,
+        templateName: 'command_staff',
+        isVisible: false
+      },
+      {
+        id: 5,
+        parent: 3,
+        isVisible: false,
+        title: 'aggregator',
+        description: 'Invisible aggregator 2',
+        childrenPlacementType: ChildrenPlacementType.Horizontal
+      },
+      {
+        id: 6,
+        parent: 5,
+        title: 'Operations Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      },
+      {
+        id: 7,
+        parent: 5,
+        title: 'Logistics Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      },
+      {
+        id: 8,
+        parent: 5,
+        title: 'Planning Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      },
+      {
+        id: 9,
+        parent: 5,
+        title: 'Finance Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      }
+    ]
+    getIncidentContacts(this.state.incident_id)
     .then(data => data.contacts.map(contact => {
       let match = workingArray.find(role => role.id === contact.incident_role)
       if (match) {
@@ -144,36 +230,17 @@ export default class ChartEditor extends Component {
       if (workingArray[0].contact) {
         workingArray.forEach(contact => contact.title !== 'aggregator' ? contact.isVisible = true : null)
       }
-      this.setState({ incidentContacts: workingArray })
+      return this.setState({ incidentContacts: workingArray })
     }))
   }
-
-  // refreshContacts() {
-  //   getIncidentContacts(this.state.incidentID)
-  //   .then(data => {
-  //     let workingArray = this.state.incidentContacts
-  //     workingArray.forEach(role => {
-  //       if (data.contacts.find(contact => contact.incident_role === role.id)) {
-  //         role.contact = data.contacts.find(contact => contact.incident_role === role.id)
-  //       } else {
-  //         role.contact = null
-  //       }
-  //     })
-  //     if (workingArray[0].contact) {
-  //       workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
-  //     }
-  //     this.setState({ incidentContacts: workingArray })
-  //   })
-  // }
 
   componentDidMount() {
     this.refreshContacts()
   }
 
   render() {
-
     const config = {
-      pageFitMode: PageFitMode.FitToPage,
+      pageFitMode: PageFitMode.None,
       cursorItem: 0,
       highlightItem: 0,
       arrowsDirection: GroupByType.Children,
@@ -183,17 +250,16 @@ export default class ChartEditor extends Component {
       templates: [
         {
           name: 'incident_commander',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className="ContactTemplate">
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4>
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                <div className="ContactJob">{itemConfig.contact ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : ''}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -212,17 +278,16 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'command_staff',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4>
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                <div className="ContactJob">{itemConfig.contact ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : ''}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -244,17 +309,16 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'section_commander',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4> 
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
-                </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+              </div>                  
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                <div className="ContactJob">{itemConfig.contact ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : ''}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -268,9 +332,9 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
+              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserDelete />
-              </button>}
+              </button> : null}
               {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
               </button>}
@@ -279,17 +343,16 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'section_node',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4>
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                {itemConfig.contact && <div className="ContactJob">{itemConfig.contact.contact_type === 'Person' ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : `${itemConfig.contact.point_of_contact} - ${itemConfig.contact.point_of_contact_title}, ${itemConfig.contact.organization}`}</div>}
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -303,9 +366,9 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('delete this node!')}>
+              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineDelete />
-              </button>}
+              </button> : null}
               {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
               </button>}
@@ -322,14 +385,14 @@ export default class ChartEditor extends Component {
         {this.state.assignmentMenu.isVisible && <AssignRoleMenu 
           show={this.state.assignmentMenu.isVisible} 
           role={this.state.assignmentMenu.role}
-          incidentID={this.state.incidentID}
+          incident_id={this.state.incident_id}
           onHide={() => {
             this.setState({ assignmentMenu: { isVisible: false, role: null } })
             this.refreshContacts()
           }} 
           animation={false} 
         />}
-        <UnassignMenu
+        {this.state.unassignMenu.isVisible && <UnassignMenu
           show={this.state.unassignMenu.isVisible}
           role={this.state.unassignMenu.role}
           onHide={() => {
@@ -337,11 +400,11 @@ export default class ChartEditor extends Component {
             this.refreshContacts()
           }}
           animation={false}         
-        />
+        />}
         {this.state.reassignMenu.isVisible && <ReassignMenu
           show={this.state.reassignMenu.isVisible}
           role={this.state.reassignMenu.role}
-          incidentID={this.state.incidentID}
+          incident_id={this.state.incident_id}
           onHide={() => {
             this.setState({ reassignMenu: { isVisible: false, role: null } })
             this.refreshContacts()
@@ -355,7 +418,7 @@ export default class ChartEditor extends Component {
             this.refreshContacts()
           }}
           parent={this.state.addNode.parent}
-          incidentID={this.state.incidentID}
+          incident_id={this.state.incident_id}
           animation={false}
         />}
       </div>

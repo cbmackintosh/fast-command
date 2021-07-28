@@ -5,20 +5,18 @@ import { getAllContacts, updateContactAssignment } from '../../api-calls'
 import { returnContactAvatar } from '../../utils'
 
 const ReassignMenu = (props) => {
-  console.log(props)
   const [availableContacts, setAvailableContacts] = useState([])
   const [selectedContact, setSelectedContact] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const userID = useSelector(state => state.user.user.id)
-  
-  const refreshContacts = () => {
-    getAllContacts(userID)
-    .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
-  }
 
   useEffect(() => {
+    const refreshContacts = () => {
+      getAllContacts(userID)
+      .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
+    }  
     refreshContacts()
-  }, [])
+  }, [userID])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -34,13 +32,12 @@ const ReassignMenu = (props) => {
 
   const reassignContact = () => {
     Promise.all([
-      updateContactAssignment(selectedContact.id, props.role.id, props.incidentID),
-      updateContactAssignment(props.role.contact.id, null, null) 
+      updateContactAssignment(selectedContact.id, props.role.id, props.incident_id, props.role.parent, props.role.title),
+      updateContactAssignment(props.role.contact.id, null, null, null, null) 
     ])
     .then(response => {
       if (response[0].status === "updated" && response[1].status === "updated") {
         setSelectedContact(null)
-        refreshContacts()
         props.onHide()
       }
     })

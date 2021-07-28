@@ -5,23 +5,22 @@ import { getAllContacts, updateContactAssignment } from '../../api-calls';
 import { returnContactAvatar } from '../../utils';
 
 const AddNode = (props) => {
-  console.log(props)
   const [availableContacts, setAvailableContacts] = useState([])
   const [selectedContact, setSelectedContact] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [nodeName, setNodeName] = useState('')
   const [nodeType, setNodeType] = useState('')
   const [confirmationVisibility, setConfirmationVisibility] = useState(false)
+  const [errors, setErrors] = useState([])
   const userID = useSelector(state => state.user.user.id)
 
-  const refreshContacts = () => {
-    getAllContacts(userID)
-    .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null)))
-  }
-
   useEffect(() => {
+    const refreshContacts = () => {
+      getAllContacts(userID)
+      .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null)))
+    }
     refreshContacts()
-  }, [])
+  }, [userID])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -29,20 +28,24 @@ const AddNode = (props) => {
     }).map(contact => {
       return (
         <div key={contact.id} onClick={() => setSelectedContact(contact)}>
-          {returnContactAvatar(contact.contact_type)} {contact.name} - {contact.jobtitle} - {contact.organization}
+          {returnContactAvatar(contact.contact_type)} {contact.name} - {contact.jobtitle === 'n/a' ? null : `${contact.jobtitle} -`} {contact.organization}
         </div>
       )
     })
   }
 
   const assignContactToRole = () => {
-    const incidentTitle = nodeName + nodeType
-    updateContactAssignment(selectedContact.id, Date.now(), props.incidentID, props.parent.id, incidentTitle)
+    let incidentTitle;
+    if (!nodeType) {
+      incidentTitle = nodeName
+    } else {
+      incidentTitle = `${nodeName} (${nodeType})`
+    }
+    updateContactAssignment(selectedContact.id, Date.now(), props.incident_id, props.parent.id, incidentTitle)
     .then (response => {
       if (response.status === 'updated') {
         setConfirmationVisibility(false)
         setSelectedContact(null)
-        refreshContacts()
         props.onHide()
       }
     })
@@ -51,7 +54,10 @@ const AddNode = (props) => {
   const validateForm = e => {
     e.preventDefault()
     if (!selectedContact || !nodeName) {
-      console.log('error')
+      let errorArray = []
+      if (!selectedContact) errorArray.push('Please select a contact to assign to this node')
+      if (!nodeName) errorArray.push('Please enter a name for this node')
+      setErrors(errorArray)
     } else {
       setConfirmationVisibility(true)
     }
@@ -113,6 +119,10 @@ const AddNode = (props) => {
             <button onClick={e => validateForm(e)}>
               SUBMIT
             </button>
+
+            {errors && errors.map(error => {
+              return <p key={error}>{error}</p>
+            })}
   
             <hr></hr>
   

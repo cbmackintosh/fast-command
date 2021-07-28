@@ -7,7 +7,7 @@ const UnassignMenu = (props) => {
   
   const unassignContact = () => {
 
-    updateContactAssignment(props.role.contact.id, null, null)
+    updateContactAssignment(props.role.contact.id, null, null, null, null)
     .then(response => {
       if (response.status === 'updated') {
         props.onHide()
