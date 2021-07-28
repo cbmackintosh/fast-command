@@ -148,24 +148,6 @@ export default class ChartEditor extends Component {
     }))
   }
 
-  // refreshContacts() {
-  //   getIncidentContacts(this.state.incidentID)
-  //   .then(data => {
-  //     let workingArray = this.state.incidentContacts
-  //     workingArray.forEach(role => {
-  //       if (data.contacts.find(contact => contact.incident_role === role.id)) {
-  //         role.contact = data.contacts.find(contact => contact.incident_role === role.id)
-  //       } else {
-  //         role.contact = null
-  //       }
-  //     })
-  //     if (workingArray[0].contact) {
-  //       workingArray.forEach(contact => contact.title !=='aggregator' ? contact.isVisible = true : null)
-  //     }
-  //     this.setState({ incidentContacts: workingArray })
-  //   })
-  // }
-
   componentDidMount() {
     this.refreshContacts()
   }
@@ -268,9 +250,9 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
+              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserDelete />
-              </button>}
+              </button> : null}
               {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
               </button>}
@@ -303,9 +285,9 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && <button onClick={() => console.log('delete this node!')}>
+              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => console.log('delete this node!')}>
                 <AiOutlineDelete />
-              </button>}
+              </button> : null}
               {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
                 <AiOutlineCluster />
               </button>}
