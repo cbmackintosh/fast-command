@@ -38,7 +38,6 @@ const ReassignMenu = (props) => {
     .then(response => {
       if (response[0].status === "updated" && response[1].status === "updated") {
         setSelectedContact(null)
-        // refreshContacts()
         props.onHide()
       }
     })

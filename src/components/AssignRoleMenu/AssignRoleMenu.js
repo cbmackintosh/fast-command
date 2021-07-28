@@ -37,7 +37,6 @@ const AssignRoleMenu = (props) => {
     .then(response => {
       if (response.status === "updated") {
         setSelectedContact(null)
-        // refreshContacts()
         props.onHide()
       }
     })

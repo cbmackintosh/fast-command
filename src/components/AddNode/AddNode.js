@@ -11,6 +11,7 @@ const AddNode = (props) => {
   const [nodeName, setNodeName] = useState('')
   const [nodeType, setNodeType] = useState('')
   const [confirmationVisibility, setConfirmationVisibility] = useState(false)
+  const [errors, setErrors] = useState([])
   const userID = useSelector(state => state.user.user.id)
 
   useEffect(() => {
@@ -40,7 +41,6 @@ const AddNode = (props) => {
       if (response.status === 'updated') {
         setConfirmationVisibility(false)
         setSelectedContact(null)
-        // refreshContacts()
         props.onHide()
       }
     })
@@ -49,7 +49,10 @@ const AddNode = (props) => {
   const validateForm = e => {
     e.preventDefault()
     if (!selectedContact || !nodeName) {
-      console.log('error')
+      let errorArray = []
+      if (!selectedContact) errorArray.push('Please select a contact to assign to this node')
+      if (!nodeName) errorArray.push('Please enter a name for this node')
+      setErrors(errorArray)
     } else {
       setConfirmationVisibility(true)
     }
@@ -111,6 +114,10 @@ const AddNode = (props) => {
             <button onClick={e => validateForm(e)}>
               SUBMIT
             </button>
+
+            {errors && errors.map(error => {
+              return <p key={error}>{error}</p>
+            })}
   
             <hr></hr>
   

@@ -81,7 +81,6 @@ export const getIncidentContacts = (incidentID) => {
 }
 
 export const updateContactAssignment = (contactID, roleID, incidentID, parentID, incidentTitle) => {
-  console.log(contactID, roleID, incidentID, parentID, incidentTitle)
   return axios.put(`${baseURL}/contacts/${contactID}`, {'incident_id': incidentID, 'incident_role': roleID, 'incident_parent': parentID, 'incident_title': incidentTitle})
   .then(response => {
     return response.data
