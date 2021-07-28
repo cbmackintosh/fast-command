@@ -230,7 +230,7 @@ export default class ChartEditor extends Component {
       if (workingArray[0].contact) {
         workingArray.forEach(contact => contact.title !== 'aggregator' ? contact.isVisible = true : null)
       }
-      this.setState({ incidentContacts: workingArray })
+      return this.setState({ incidentContacts: workingArray })
     }))
   }
 
