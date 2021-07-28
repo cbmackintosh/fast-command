@@ -32,8 +32,8 @@ const ReassignMenu = (props) => {
 
   const reassignContact = () => {
     Promise.all([
-      updateContactAssignment(selectedContact.id, props.role.id, props.incident_id),
-      updateContactAssignment(props.role.contact.id, null, null) 
+      updateContactAssignment(selectedContact.id, props.role.id, props.incident_id, props.role.parent, props.role.title),
+      updateContactAssignment(props.role.contact.id, null, null, null, null) 
     ])
     .then(response => {
       if (response[0].status === "updated" && response[1].status === "updated") {
