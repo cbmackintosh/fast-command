@@ -123,8 +123,94 @@ export default class ChartEditor extends Component {
   }
 
   refreshContacts() {
-    let workingArray = this.state.incidentContacts
-    workingArray.forEach(role => role.contact = null)
+    let workingArray = [
+      {
+        id: 0,
+        parent: null,
+        title: 'Incident Commander',
+        contact: null,
+        templateName: 'incident_commander',
+      },
+      {
+        id: 1,
+        parent: 0,
+        title: 'Liaison Officer',
+        contact: null,
+        itemType: ItemType.Assistant,
+        adviserPlacementType: AdviserPlacementType.Right,
+        templateName: 'command_staff',
+        isVisible: false
+      },
+      {
+        id: 2,
+        parent: 0,
+        title: 'Public Information Officer',
+        contact: null,
+        itemType: ItemType.Assistant,
+        adviserPlacementType: AdviserPlacementType.Left, 
+        templateName: 'command_staff',
+        isVisible: false 
+      },
+      {
+        id: 3,
+        parent: 0,
+        isVisible: false,
+        title: 'aggregator',
+        description: 'Invisible aggregator',
+        childrenPlacementType: ChildrenPlacementType.Horizontal
+      },
+      {
+        id: 4,
+        parent: 3,
+        title: 'Safety Officer',
+        contact: null,
+        itemType: ItemType.Assistant,
+        adviserPlacementType: AdviserPlacementType.Right,
+        hasButtons: Enabled.True,
+        templateName: 'command_staff',
+        isVisible: false
+      },
+      {
+        id: 5,
+        parent: 3,
+        isVisible: false,
+        title: 'aggregator',
+        description: 'Invisible aggregator 2',
+        childrenPlacementType: ChildrenPlacementType.Horizontal
+      },
+      {
+        id: 6,
+        parent: 5,
+        title: 'Operations Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      },
+      {
+        id: 7,
+        parent: 5,
+        title: 'Logistics Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      },
+      {
+        id: 8,
+        parent: 5,
+        title: 'Planning Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      },
+      {
+        id: 9,
+        parent: 5,
+        title: 'Finance Chief',
+        contact: null,
+        templateName: 'section_commander',
+        isVisible: false
+      }
+    ]
     getIncidentContacts(this.state.incidentID)
     .then(data => data.contacts.map(contact => {
       let match = workingArray.find(role => role.id === contact.incident_role)
@@ -153,7 +239,7 @@ export default class ChartEditor extends Component {
   }
 
   render() {
-
+    console.log(this.state.incidentContacts)
     const config = {
       pageFitMode: PageFitMode.FitToPage,
       cursorItem: 0,
@@ -285,7 +371,7 @@ export default class ChartEditor extends Component {
               {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineUserSwitch />
               </button>}
-              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => console.log('delete this node!')}>
+              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
                 <AiOutlineDelete />
               </button> : null}
               {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
@@ -311,7 +397,7 @@ export default class ChartEditor extends Component {
           }} 
           animation={false} 
         />}
-        <UnassignMenu
+        {this.state.unassignMenu.isVisible && <UnassignMenu
           show={this.state.unassignMenu.isVisible}
           role={this.state.unassignMenu.role}
           onHide={() => {
@@ -319,7 +405,7 @@ export default class ChartEditor extends Component {
             this.refreshContacts()
           }}
           animation={false}         
-        />
+        />}
         {this.state.reassignMenu.isVisible && <ReassignMenu
           show={this.state.reassignMenu.isVisible}
           role={this.state.reassignMenu.role}
