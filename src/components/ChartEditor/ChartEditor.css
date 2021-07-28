@@ -17,3 +17,8 @@
 .UnassignedContactTemplate > .ContactTitleBackground > .ContactTitle {
   color: darkslateblue;
 }
+
+.ContactTitleBackground {
+  display: flex;
+  justify-content: space-between;
+}

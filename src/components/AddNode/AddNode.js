@@ -28,14 +28,19 @@ const AddNode = (props) => {
     }).map(contact => {
       return (
         <div key={contact.id} onClick={() => setSelectedContact(contact)}>
-          {returnContactAvatar(contact.contact_type)} {contact.name} - {contact.jobtitle} - {contact.organization}
+          {returnContactAvatar(contact.contact_type)} {contact.name} - {contact.jobtitle === 'n/a' ? null : `${contact.jobtitle} -`} {contact.organization}
         </div>
       )
     })
   }
 
   const assignContactToRole = () => {
-    const incidentTitle = nodeName + nodeType
+    let incidentTitle;
+    if (!nodeType) {
+      incidentTitle = nodeName
+    } else {
+      incidentTitle = `${nodeName} (${nodeType})`
+    }
     updateContactAssignment(selectedContact.id, Date.now(), props.incident_id, props.parent.id, incidentTitle)
     .then (response => {
       if (response.status === 'updated') {

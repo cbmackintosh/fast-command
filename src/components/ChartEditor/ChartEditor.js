@@ -240,7 +240,7 @@ export default class ChartEditor extends Component {
 
   render() {
     const config = {
-      pageFitMode: PageFitMode.FitToPage,
+      pageFitMode: PageFitMode.None,
       cursorItem: 0,
       highlightItem: 0,
       arrowsDirection: GroupByType.Children,
@@ -250,17 +250,16 @@ export default class ChartEditor extends Component {
       templates: [
         {
           name: 'incident_commander',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className="ContactTemplate">
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4>
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                <div className="ContactJob">{itemConfig.contact ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : ''}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -279,17 +278,16 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'command_staff',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4>
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                <div className="ContactJob">{itemConfig.contact ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : ''}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -311,17 +309,16 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'section_commander',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4> 
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
-                </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+              </div>                  
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                <div className="ContactJob">{itemConfig.contact ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : ''}</div>
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
@@ -346,17 +343,16 @@ export default class ChartEditor extends Component {
         },
         {
           name: 'section_node',
-          itemSize: { width: 220, height: 150 },
+          itemSize: { width: 300, height: 140 },
           onItemRender: ({ context: itemConfig }) => {
             return (
               <div className={itemConfig.contact ? 'ContactTemplate' : 'UnassignedContactTemplate'}>
                 <div className="ContactTitleBackground">
-                  <div className="ContactTitle">{itemConfig.title}</div>
-                </div>
-                <div className="ContactPhotoFrame">
+                  <h4 className="ContactTitle">{itemConfig.title}</h4>
                   {itemConfig.contact ? returnContactAvatar(itemConfig.contact.contact_type) : null}
                 </div>
-                <div className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</div>
+                <h5 className="ContactDescription">{itemConfig.contact ? itemConfig.contact.name : 'Unassigned'}</h5>
+                {itemConfig.contact && <div className="ContactJob">{itemConfig.contact.contact_type === 'Person' ? `${itemConfig.contact.jobtitle} - ${itemConfig.contact.organization}` : `${itemConfig.contact.point_of_contact} - ${itemConfig.contact.point_of_contact_title}, ${itemConfig.contact.organization}`}</div>}
                 <div className="ContactPhone">Phone: {itemConfig.contact ? itemConfig.contact.phone : ''}</div>
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
