@@ -12,14 +12,13 @@ const AssignRoleMenu = (props) => {
   const [searchQuery, setSearchQuery] = useState('')
   const userID = useSelector(state => state.user.user.id)
 
-  const refreshContacts = () => {
-    getAllContacts(userID)
-    .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
-  }
-
   useEffect(() => {
+    const refreshContacts = () => {
+      getAllContacts(userID)
+      .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null && contact.contact_type === 'Person')))
+    }
     refreshContacts()
-  }, [refreshContacts])
+  }, [userID])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -34,11 +33,11 @@ const AssignRoleMenu = (props) => {
   }
 
   const assignContactToRole = () => {
-    updateContactAssignment(selectedContact.id, props.role.id, props.incidentID)
+    updateContactAssignment(selectedContact.id, props.role.id, props.incident_id, props.role.parent, props.role.title)
     .then(response => {
       if (response.status === "updated") {
         setSelectedContact(null)
-        refreshContacts()
+        // refreshContacts()
         props.onHide()
       }
     })

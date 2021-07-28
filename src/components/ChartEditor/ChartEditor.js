@@ -11,10 +11,10 @@ import AddNode from '../AddNode/AddNode'
 import { returnContactAvatar } from '../../utils'
 
 export default class ChartEditor extends Component {
-  constructor({ incidentID }) {
+  constructor({ incident_id }) {
     super()
     this.state = {
-      incidentID: incidentID,
+      incident_id: incident_id,
       assignmentMenu: {
         isVisible: false,
         role: null
@@ -211,7 +211,7 @@ export default class ChartEditor extends Component {
         isVisible: false
       }
     ]
-    getIncidentContacts(this.state.incidentID)
+    getIncidentContacts(this.state.incident_id)
     .then(data => data.contacts.map(contact => {
       let match = workingArray.find(role => role.id === contact.incident_role)
       if (match) {
@@ -239,7 +239,6 @@ export default class ChartEditor extends Component {
   }
 
   render() {
-    console.log(this.state.incidentContacts)
     const config = {
       pageFitMode: PageFitMode.FitToPage,
       cursorItem: 0,
@@ -390,7 +389,7 @@ export default class ChartEditor extends Component {
         {this.state.assignmentMenu.isVisible && <AssignRoleMenu 
           show={this.state.assignmentMenu.isVisible} 
           role={this.state.assignmentMenu.role}
-          incidentID={this.state.incidentID}
+          incident_id={this.state.incident_id}
           onHide={() => {
             this.setState({ assignmentMenu: { isVisible: false, role: null } })
             this.refreshContacts()
@@ -409,7 +408,7 @@ export default class ChartEditor extends Component {
         {this.state.reassignMenu.isVisible && <ReassignMenu
           show={this.state.reassignMenu.isVisible}
           role={this.state.reassignMenu.role}
-          incidentID={this.state.incidentID}
+          incident_id={this.state.incident_id}
           onHide={() => {
             this.setState({ reassignMenu: { isVisible: false, role: null } })
             this.refreshContacts()
@@ -423,7 +422,7 @@ export default class ChartEditor extends Component {
             this.refreshContacts()
           }}
           parent={this.state.addNode.parent}
-          incidentID={this.state.incidentID}
+          incident_id={this.state.incident_id}
           animation={false}
         />}
       </div>

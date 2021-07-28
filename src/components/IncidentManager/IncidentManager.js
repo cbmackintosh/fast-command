@@ -16,7 +16,7 @@ const IncidentManager = ({ slug }) => {
       <h1>{incident.name}</h1>
       <h4>{incident.incident_type} | {incident.location} | ACTIVE SINCE: {incident.created_at}</h4>
       <p>{incident.summary}</p>
-      {incident.id && <ChartEditor incidentID={incident.id} />}
+      {incident.id && <ChartEditor incident_id={incident.id} />}
     </div>
   )
 }

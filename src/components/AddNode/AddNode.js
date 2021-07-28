@@ -5,7 +5,6 @@ import { getAllContacts, updateContactAssignment } from '../../api-calls';
 import { returnContactAvatar } from '../../utils';
 
 const AddNode = (props) => {
-  console.log(props)
   const [availableContacts, setAvailableContacts] = useState([])
   const [selectedContact, setSelectedContact] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -14,14 +13,13 @@ const AddNode = (props) => {
   const [confirmationVisibility, setConfirmationVisibility] = useState(false)
   const userID = useSelector(state => state.user.user.id)
 
-  const refreshContacts = () => {
-    getAllContacts(userID)
-    .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null)))
-  }
-
   useEffect(() => {
+    const refreshContacts = () => {
+      getAllContacts(userID)
+      .then(response => setAvailableContacts(response.contacts.filter(contact => contact.incident_id === null)))
+    }
     refreshContacts()
-  }, [])
+  }, [userID])
 
   const compileAvailableContacts = (qry) => {
     return availableContacts.filter(contact => {
@@ -37,12 +35,12 @@ const AddNode = (props) => {
 
   const assignContactToRole = () => {
     const incidentTitle = nodeName + nodeType
-    updateContactAssignment(selectedContact.id, Date.now(), props.incidentID, props.parent.id, incidentTitle)
+    updateContactAssignment(selectedContact.id, Date.now(), props.incident_id, props.parent.id, incidentTitle)
     .then (response => {
       if (response.status === 'updated') {
         setConfirmationVisibility(false)
         setSelectedContact(null)
-        refreshContacts()
+        // refreshContacts()
         props.onHide()
       }
     })

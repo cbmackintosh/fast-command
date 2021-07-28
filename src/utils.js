@@ -23,5 +23,7 @@ export const returnContactAvatar = (contactType) => {
       return <GiCrane />
     case 'Animal':
       return <GiSittingDog />
+    default:
+      return <AiOutlineUser />
   }
 }
