@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getIncidentBySlug } from '../../api-calls'
 import ChartEditor from '../ChartEditor/ChartEditor'
+import PressReleaseEditor from '../PressReleaseEditor/PressReleaseEditor'
 
 const IncidentManager = ({ slug }) => {
   
@@ -20,6 +21,7 @@ const IncidentManager = ({ slug }) => {
       <Link to='/dashboard'><button>BACK</button></Link>
       <button>RESOLVE</button>
       {incident.id && <ChartEditor incident_id={incident.id} />}
+      <PressReleaseEditor incident_id={incident.id} />
     </div>
   )
 }
