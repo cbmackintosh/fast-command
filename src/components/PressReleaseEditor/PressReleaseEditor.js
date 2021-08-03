@@ -6,11 +6,26 @@ const PressReleaseEditor = (props) => {
 
   const [headline, setHeadline] = useState('')
   const [body, setBody] = useState('')
+  const [errors, setErrors] = useState([])
 
   const postNewPressRelease = e => {
     e.preventDefault()
     postPressRelease(props.incident_id, headline, body)
-    .then(response => console.log(response))
+    .then(response => {
+      if (response.status === 'created') {
+        setHeadline('')
+        setBody('')
+        setErrors([])
+      } else {
+        setErrors(response.errors)
+      }
+    })
+  }
+
+  const compileErrors = () => {
+    return errors.map(error => {
+      return <p>{error}</p>
+    })
   }
 
   return (
@@ -33,6 +48,8 @@ const PressReleaseEditor = (props) => {
         />
 
         <button type='submit'>SUBMIT</button>
+
+        {errors && compileErrors()}
 
       </form>
 

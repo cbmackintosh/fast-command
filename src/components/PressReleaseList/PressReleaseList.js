@@ -7,13 +7,13 @@ const PressReleaseList = (props) => {
 
   useEffect(() => {
     getPressReleases(props.incident_id)
-    .then(response => setPressReleases(response.posts))
+    .then(response => setPressReleases(response.posts.reverse()))
   })
 
   const compileList = () => {
     return pressReleases.map(pressRelease => {
       return (
-        <div>
+        <div key={pressRelease.id}>
           <h3>{pressRelease.title}</h3>
           <p>{pressRelease.updated_at}</p>
           <p>{pressRelease.body}</p>
