@@ -1,16 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getPressReleases } from '../../api-calls'
 
 const PressReleaseList = (props) => {
 
+  const [pressReleases, setPressReleases] = useState([])
+
   useEffect(() => {
     getPressReleases(props.incident_id)
-    .then(response => console.log(response))
+    .then(response => setPressReleases(response.posts))
   })
+
+  const compileList = () => {
+    return pressReleases.map(pressRelease => {
+      return (
+        <div>
+          <h3>{pressRelease.title}</h3>
+          <p>{pressRelease.updated_at}</p>
+          <p>{pressRelease.body}</p>
+        </div>
+      )
+    })
+  }
 
   return (
     <div>
       Press Releases
+      {compileList()}
     </div>
   )
 
