@@ -2,12 +2,7 @@ import React, { Component } from 'react'
 import { getIncidentContacts } from '../../api-calls'
 import { OrgDiagram } from 'basicprimitivesreact'
 import { PageFitMode, GroupByType, Enabled, ItemType, AdviserPlacementType, ChildrenPlacementType } from 'basicprimitives';
-import './ChartEditor.css'
-import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineUserSwitch, AiOutlineCluster, AiOutlineDelete } from 'react-icons/ai'
-import AssignRoleMenu from '../AssignRoleMenu/AssignRoleMenu';
-import UnassignMenu from '../UnassignMenu/UnassignMenu'
-import ReassignMenu from '../ReassignMenu/ReassignMenu'
-import AddNode from '../AddNode/AddNode'
+import '../ChartEditor/ChartEditor.css'
 import { returnContactAvatar } from '../../utils'
 
 export default class ChartEditor extends Component {
@@ -15,22 +10,6 @@ export default class ChartEditor extends Component {
     super()
     this.state = {
       incident_id: incident_id,
-      assignmentMenu: {
-        isVisible: false,
-        role: null
-      },
-      unassignMenu: {
-        isVisible: false,
-        role: null
-      },
-      reassignMenu: {
-        isVisible: false,
-        role: null
-      },
-      addNode: {
-        isVisible: false,
-        parent: null
-      },
       incidentContacts: [
         {
           id: 0,
@@ -245,7 +224,7 @@ export default class ChartEditor extends Component {
       highlightItem: 0,
       arrowsDirection: GroupByType.Children,
       hasSelectorCheckbox: Enabled.False,
-      hasButtons: Enabled.True,
+      hasButtons: Enabled.False,
       buttonsPanelSize: 40,
       templates: [
         {
@@ -264,16 +243,6 @@ export default class ChartEditor extends Component {
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
             )
-          },
-          onButtonsRender: ({ context: itemConfig }) => {
-            return <>
-              {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserAdd />
-              </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserSwitch />
-              </button>}
-            </>
           }
         },
         {
@@ -292,19 +261,6 @@ export default class ChartEditor extends Component {
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
             )
-          },
-          onButtonsRender: ({ context: itemConfig }) => {
-            return <>
-              {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserAdd />
-              </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserSwitch />
-              </button>}
-              {itemConfig.contact  && <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserDelete />
-              </button>}
-            </>
           }
         },
         {
@@ -323,22 +279,6 @@ export default class ChartEditor extends Component {
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
             )
-          },
-          onButtonsRender: ({ context: itemConfig }) => {
-            return <>
-              {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserAdd />
-              </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserSwitch />
-              </button>}
-              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserDelete />
-              </button> : null}
-              {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
-                <AiOutlineCluster />
-              </button>}
-            </>
           }
         },
         {
@@ -357,22 +297,6 @@ export default class ChartEditor extends Component {
                 <div className="ContactEmail">Email: {itemConfig.contact ? itemConfig.contact.email : ''}</div>
               </div> 
             )
-          },
-          onButtonsRender: ({ context: itemConfig }) => {
-            return <>
-              {!itemConfig.contact && <button onClick={() => this.setState({ assignmentMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserAdd />
-              </button>}
-              {itemConfig.contact && <button onClick={() => this.setState({ reassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineUserSwitch />
-              </button>}
-              {itemConfig.contact && !this.state.incidentContacts.find(contact => contact.parent === itemConfig.id) ? <button onClick={() => this.setState({ unassignMenu: { isVisible: true, role: itemConfig } })}>
-                <AiOutlineDelete />
-              </button> : null}
-              {itemConfig.contact && <button onClick={() => this.setState({ addNode: { isVisible: true, parent: itemConfig } })}>
-                <AiOutlineCluster />
-              </button>}
-            </>
           }
         }
       ],
@@ -382,45 +306,6 @@ export default class ChartEditor extends Component {
     return (
       <div className='chart-editor'>
         <OrgDiagram centerOnCursor={true} config={config} />
-        {this.state.assignmentMenu.isVisible && <AssignRoleMenu 
-          show={this.state.assignmentMenu.isVisible} 
-          role={this.state.assignmentMenu.role}
-          incident_id={this.state.incident_id}
-          onHide={() => {
-            this.setState({ assignmentMenu: { isVisible: false, role: null } })
-            this.refreshContacts()
-          }} 
-          animation={false} 
-        />}
-        {this.state.unassignMenu.isVisible && <UnassignMenu
-          show={this.state.unassignMenu.isVisible}
-          role={this.state.unassignMenu.role}
-          onHide={() => {
-            this.setState({ unassignMenu: { isVisible: false, role: null } })
-            this.refreshContacts()
-          }}
-          animation={false}         
-        />}
-        {this.state.reassignMenu.isVisible && <ReassignMenu
-          show={this.state.reassignMenu.isVisible}
-          role={this.state.reassignMenu.role}
-          incident_id={this.state.incident_id}
-          onHide={() => {
-            this.setState({ reassignMenu: { isVisible: false, role: null } })
-            this.refreshContacts()
-          }}
-          animation={false}
-        />}
-        {this.state.addNode.isVisible && <AddNode
-          show={this.state.addNode.isVisible}
-          onHide={() => {
-            this.setState({ addNode: { isVisible: false, parent: null } })
-            this.refreshContacts()
-          }}
-          parent={this.state.addNode.parent}
-          incident_id={this.state.incident_id}
-          animation={false}
-        />}
       </div>
     )
   }
