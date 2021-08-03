@@ -85,6 +85,23 @@ export const updateContactAssignment = (contactID, roleID, incidentID, parentID,
   .then(response => {
     return response.data
   })
-  .catch(error => console.log('api errros:', error))
+  .catch(error => console.log('api errors:', error))
+}
+
+export const getPressReleases = (incidentID) => {
+  return axios.get(`${baseURL}/posts?incident_id=${incidentID}`)
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
+}
+
+
+export const postPressRelease = (incidentID, headline, body) => {
+  return axios.put(`${baseURL}/posts`, {'incident_id': incidentID, 'title': headline, 'body': body})
+  .then(response => {
+    return response.data
+  })
+  .catch(error => console.log('api errors:', error))
 }
 
