@@ -39,7 +39,7 @@ const ContactSearch = () => {
         onChange={e => setQuery(e.target.value)} 
         value={query}
       />
-      {query.length && compileSearchResults(query.toLowerCase())}
+      {query.length ? compileSearchResults(query.toLowerCase()) : null}
     </div>
   )
 }
