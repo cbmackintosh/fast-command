@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar } from '../Navbar/Navbar'
 import NewContactForm from '../NewContactForm/NewContactForm'
-import ContentSearch from '../ContactSearch/ContactSearch'
+import ContactSearch from '../ContactSearch/ContactSearch'
 import './ContactsMenu.css'
 
 const ContactsMenu = () => {
@@ -10,7 +10,7 @@ const ContactsMenu = () => {
       <Navbar />
       <div>
         <NewContactForm />
-        <ContentSearch />
+        <ContactSearch />
       </div>
     </div>
   )
