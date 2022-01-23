@@ -24,7 +24,7 @@ const ContactSearch = () => {
       })
       .map(contact => {
         return (
-          <div className='search-result'>
+          <div className='search-result' key={contact.name}>
             {contact.name}
           </div>
         )
