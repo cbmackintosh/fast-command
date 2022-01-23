@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getAllContacts } from '../../api-calls'
 
-const ContentSearch = () => {
+const ContactSearch = () => {
   
   const userID = useSelector(state => state.user.user.id)
   const [query, setQuery] = useState('')
@@ -24,7 +24,7 @@ const ContentSearch = () => {
       })
       .map(contact => {
         return (
-          <div className='search-result'>
+          <div className='search-result' key={contact.name}>
             {contact.name}
           </div>
         )
@@ -39,9 +39,9 @@ const ContentSearch = () => {
         onChange={e => setQuery(e.target.value)} 
         value={query}
       />
-      {query.length && compileSearchResults(query.toLowerCase())}
+      {query.length ? compileSearchResults(query.toLowerCase()) : null}
     </div>
   )
 }
 
-export default ContentSearch
+export default ContactSearch

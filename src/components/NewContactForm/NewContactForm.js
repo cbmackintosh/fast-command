@@ -159,8 +159,8 @@ const NewContactForm = () => {
 
       <button type="submit">SUBMIT</button>
 
-      {success && <p>New contact created!</p>}
-      {errors.length && handleErrors()}
+      {success ? <p>New contact created!</p> : null}
+      {errors.length ? handleErrors() : null}
 
     </form>
   )

@@ -96,8 +96,8 @@ const NewIncidentForm = () => {
 
         <button type="submit">DECLARE INCIDENT</button>
 
-        {success && <p>INCIDENT DECLARED SUCCESSFULLY</p>}
-        {errors.length && handleErrors()}
+        {success ? <p>INCIDENT DECLARED SUCCESSFULLY</p> : null}
+        {errors.length ? handleErrors() : null}
 
       </form>
     </div>

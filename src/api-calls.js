@@ -98,7 +98,7 @@ export const getPressReleases = (incidentID) => {
 
 
 export const postPressRelease = (incidentID, headline, body) => {
-  return axios.put(`${baseURL}/posts`, {'incident_id': incidentID, 'title': headline, 'body': body})
+  return axios.post(`${baseURL}/posts`, {'incident_id': incidentID, 'title': headline, 'body': body})
   .then(response => {
     return response.data
   })
