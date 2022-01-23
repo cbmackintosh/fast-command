@@ -8,7 +8,7 @@ const PressReleaseList = (props) => {
   useEffect(() => {
     getPressReleases(props.incident_id)
     .then(response => setPressReleases(response.posts.reverse()))
-  })
+  }, [props.incident_id])
 
   const compileList = () => {
     return pressReleases.map(pressRelease => {
